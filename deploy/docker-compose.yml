@@ -1,0 +1,97 @@
+name: flygit
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-flygit}
+      POSTGRES_USER: ${POSTGRES_USER:-flygit}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in deploy/.env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    # Keep data (rate limits, sessions) across restarts.
+    command: ['redis-server', '--appendonly', 'yes']
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/api.Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      APP_URL: ${APP_URL:-http://localhost:8080}
+      API_URL: ${API_URL:-http://localhost:8080}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-flygit}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in deploy/.env}@postgres:5432/${POSTGRES_DB:-flygit}
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?set JWT_ACCESS_SECRET in deploy/.env}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?set JWT_REFRESH_SECRET in deploy/.env}
+      GIT_STORAGE_DIR: /data/git
+      STORAGE_DRIVER: local
+      STORAGE_LOCAL_DIR: /data/uploads
+      SSH_ENABLED: ${SSH_ENABLED:-true}
+      SSH_HOST_KEY_PATH: /data/ssh/host_ed25519
+      FLYGIT_HOOK_SECRET: ${FLYGIT_HOOK_SECRET:?set FLYGIT_HOOK_SECRET in deploy/.env}
+      FLYGIT_API_URL: http://api:3000
+      REGISTRATION_MODE: ${REGISTRATION_MODE:-open}
+      ALLOW_REGISTRATION: ${ALLOW_REGISTRATION:-true}
+      CONFIRM_EMAIL_REQUIRED: ${CONFIRM_EMAIL_REQUIRED:-true}
+      MAIL_DRIVER: ${MAIL_DRIVER:-log}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-FlyGit <noreply@flygit.local>}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      TRUST_PROXY: ${TRUST_PROXY:-true}
+    volumes:
+      - gitdata:/data/git
+      - uploads:/data/uploads
+      - sshdata:/data/ssh
+    ports:
+      # Expose SSH transport directly (HTTP goes through the web proxy).
+      - '${SSH_PORT:-2222}:2222'
+
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      # Not used at runtime by nginx, but keeps the image self-describing.
+      API_HOST: api
+    ports:
+      - '${HTTP_PORT:-8080}:80'
+
+volumes:
+  pgdata:
+  redisdata:
+  gitdata:
+  uploads:
+  sshdata:
