@@ -9,6 +9,7 @@ import { IssueDetailPage } from './IssueDetailPage';
 import { CreateIssuePage } from './CreateIssuePage';
 import { MergeRequestDetailPage } from './MergeRequestDetailPage';
 import { CreateMergeRequestPage } from './CreateMergeRequestPage';
+import { RepoSettingsPage } from './RepoSettingsPage';
 
 /** Repository detail shell at `/repositories/:owner/:repo` with sub-tabs. */
 export function RepositoryPage() {
@@ -72,6 +73,7 @@ function RepoTabs({ owner, repo, defaultBranch }: { owner: string; repo: string;
         </TabLink>
         <TabLink to={`/repositories/${owner}/${repo}/issues`}>{t('repo.issues')}</TabLink>
         <TabLink to={`/repositories/${owner}/${repo}/merge-requests`}>{t('repo.mergeRequests')}</TabLink>
+        <TabLink to={`/repositories/${owner}/${repo}/settings`}>{t('repo.settings')}</TabLink>
       </nav>
       <div className="mt-6">
         <Routes>
@@ -82,6 +84,7 @@ function RepoTabs({ owner, repo, defaultBranch }: { owner: string; repo: string;
           <Route path="merge-requests" element={<MergeRequestsTab owner={owner} repo={repo} />} />
           <Route path="merge-requests/new" element={<CreateMergeRequestPage />} />
           <Route path="merge-requests/:number" element={<MergeRequestDetailPage />} />
+          <Route path="settings" element={<RepoSettingsPage />} />
           <Route path="*" element={<Navigate to={`/repositories/${owner}/${repo}`} replace />} />
         </Routes>
       </div>
