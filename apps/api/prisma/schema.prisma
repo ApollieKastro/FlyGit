@@ -115,6 +115,7 @@ model User {
   mrReviews         MergeRequestReviewer[]
   releases          Release[]
   notifications     Notification[] @relation("NotificationUser")
+  notificationEvents Notification[] @relation("NotificationActor")
   actorAuditLogs    AuditLog[]     @relation("AuditActor")
   activities        Activity[]
   wikiPages         WikiPage[]
@@ -669,6 +670,7 @@ model Notification {
   createdAt DateTime @default(now()) @map("created_at")
 
   user  User @relation("NotificationUser", fields: [userId], references: [id], onDelete: Cascade)
+  actor User? @relation("NotificationActor", fields: [actorId], references: [id], onDelete: SetNull)
 
   @@index([userId, isRead])
   @@map("notifications")

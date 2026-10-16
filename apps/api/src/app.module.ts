@@ -7,6 +7,8 @@ import { RedisModule } from './redis/redis.module';
 import { AuditModule } from './audit/audit.module';
 import { MailModule } from './mail/mail.service';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { GitModule } from './git/git.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { RateLimitGuard } from './auth/rate-limit.guard';
 import { PlatformAdminGuard } from './common/guards/platform-admin.guard';
@@ -37,6 +39,8 @@ import { HealthController } from './health/health.controller';
     AuditModule,
     MailModule,
     AuthModule,
+    UsersModule,
+    GitModule,
   ],
   controllers: [HealthController],
   providers: [
