@@ -12,6 +12,7 @@ import { GitModule } from './git/git.module';
 import { RepositoriesModule } from './repositories/repositories.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { IssuesModule } from './issues/issues.module';
+import { MergeRequestsModule } from './merge-requests/merge-requests.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { RateLimitGuard } from './auth/rate-limit.guard';
 import { PlatformAdminGuard } from './common/guards/platform-admin.guard';
@@ -47,6 +48,7 @@ import { HealthController } from './health/health.controller';
     RepositoriesModule,
     OrganizationsModule,
     IssuesModule,
+    MergeRequestsModule,
   ],
   controllers: [HealthController],
   providers: [
