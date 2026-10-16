@@ -291,6 +291,26 @@
     "markUnread": "Отметить непрочитанным",
     "empty": "Уведомлений нет."
   },
+  "theme": {
+    "label": "Тема",
+    "dark": "Тёмная",
+    "light": "Светлая",
+    "system": "Системная"
+  },
+  "home": {
+    "tagline": "self-hosted Git-платформа",
+    "subtitle": "Репозитории, issues, merge requests, организации и уведомления. Полный контроль над вашим кодом.",
+    "ctaPrimary": "Начать",
+    "ctaSecondary": "Смотреть репозитории",
+    "features": {
+      "git": { "title": "Git-транспорт", "description": "Smart HTTP и SSH, ветки, теги, blame, сравнение и чтение файлов." },
+      "issues": { "title": "Issues и метки", "description": "Задачи, назначенные, метки, вехи, комментарии и реакции." },
+      "mr": { "title": "Merge requests", "description": "Диффы, ревью, аппрувы и стратегии слияния merge/squash/rebase." },
+      "orgs": { "title": "Организации", "description": "Команды, роли, приглашения и аудит действий." },
+      "notifications": { "title": "Уведомления", "description": "События репозиториев и почтовые шаблоны на трёх языках." },
+      "security": { "title": "Безопасность", "description": "2FA, PAT, SSH-ключи, защищённые ветки и rate limiting." }
+    }
+  },
   "common": {
     "loading": "Загрузка…",
     "save": "Сохранить",

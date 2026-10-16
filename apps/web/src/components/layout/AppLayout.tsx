@@ -1,6 +1,7 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useUnreadCount } from '../../features/notifications/api';
+import { useTheme } from '../../theme/theme';
 import { useI18n, LOCALES, LOCALE_LABELS, type Locale } from '../../i18n/i18n';
 import { Button } from '../ui/Button';
 
@@ -14,6 +15,7 @@ export function AppLayout() {
   const navigate = useNavigate();
   const { data: unread } = useUnreadCount(Boolean(user));
   const unreadCount = unread?.count ?? 0;
+  const { theme, setTheme } = useTheme();
 
   async function handleLogout() {
     await logout();
@@ -45,6 +47,15 @@ export function AppLayout() {
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : theme === 'light' ? 'system' : 'dark')}
+              aria-label={`${t('theme.label')}: ${t(`theme.${theme}`)}`}
+              title={`${t('theme.label')}: ${t(`theme.${theme}`)}`}
+              className="rounded-[var(--radius)] border border-border px-2 py-1.5 text-text-muted transition-colors hover:text-text"
+            >
+              {theme === 'dark' ? <MoonIcon /> : theme === 'light' ? <SunIcon /> : <AutoIcon />}
+            </button>
             <select
               value={locale}
               onChange={(e) => setLocale(e.target.value as Locale)}
@@ -122,6 +133,32 @@ export function AppLayout() {
         <Outlet />
       </main>
     </div>
+  );
+}
+
+function MoonIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </svg>
+  );
+}
+
+function AutoIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+      <path d="M8 21h8M12 17v4" />
+    </svg>
   );
 }
 

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App } from './App';
 import { I18nProvider } from './i18n/i18n';
+import { ThemeProvider } from './theme/theme';
 import { AuthProvider } from './features/auth/AuthContext';
 import './index.css';
 
@@ -22,14 +23,16 @@ if (!container) throw new Error('Root element #root not found');
 
 createRoot(container).render(
   <StrictMode>
-    <I18nProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </AuthProvider>
-      </QueryClientProvider>
-    </I18nProvider>
+    <ThemeProvider>
+      <I18nProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </AuthProvider>
+        </QueryClientProvider>
+      </I18nProvider>
+    </ThemeProvider>
   </StrictMode>,
 );

@@ -309,6 +309,26 @@
     "markUnread": "Mark as unread",
     "empty": "No notifications."
   },
+  "theme": {
+    "label": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
+  "home": {
+    "tagline": "self-hosted Git platform",
+    "subtitle": "Repositories, issues, merge requests, organizations and notifications. Full control over your code.",
+    "ctaPrimary": "Get started",
+    "ctaSecondary": "Browse repositories",
+    "features": {
+      "git": { "title": "Git transport", "description": "Smart HTTP and SSH, branches, tags, blame, comparison and file reading." },
+      "issues": { "title": "Issues and labels", "description": "Tasks, assignees, labels, milestones, comments and reactions." },
+      "mr": { "title": "Merge requests", "description": "Diffs, reviews, approvals and merge strategies merge/squash/rebase." },
+      "orgs": { "title": "Organizations", "description": "Teams, roles, invitations and an audit trail of actions." },
+      "notifications": { "title": "Notifications", "description": "Repository events and mail templates in three languages." },
+      "security": { "title": "Security", "description": "2FA, PAT, SSH keys, protected branches and rate limiting." }
+    }
+  },
   "common": {
     "loading": "Loading…",
     "save": "Save",

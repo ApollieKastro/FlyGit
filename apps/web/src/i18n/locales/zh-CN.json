@@ -309,6 +309,26 @@
     "markUnread": "标为未读",
     "empty": "暂无通知。"
   },
+  "theme": {
+    "label": "主题",
+    "dark": "深色",
+    "light": "浅色",
+    "system": "跟随系统"
+  },
+  "home": {
+    "tagline": "自托管 Git 平台",
+    "subtitle": "仓库、议题、合并请求、组织和通知。完全掌控您的代码。",
+    "ctaPrimary": "开始使用",
+    "ctaSecondary": "浏览仓库",
+    "features": {
+      "git": { "title": "Git 传输", "description": "Smart HTTP 和 SSH、分支、标签、blame、比较与文件读取。" },
+      "issues": { "title": "议题与标签", "description": "任务、指派、标签、里程碑、评论与反应。" },
+      "mr": { "title": "合并请求", "description": "差异、评审、批准以及 merge/squash/rebase 合并策略。" },
+      "orgs": { "title": "组织", "description": "团队、角色、邀请以及操作审计记录。" },
+      "notifications": { "title": "通知", "description": "仓库事件和三种语言的邮件模板。" },
+      "security": { "title": "安全", "description": "2FA、PAT、SSH 密钥、受保护分支和速率限制。" }
+    }
+  },
   "common": {
     "loading": "加载中…",
     "save": "保存",
