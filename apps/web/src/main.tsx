@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App } from './App';
+import { I18nProvider } from './i18n/i18n';
+import { AuthProvider } from './features/auth/AuthContext';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -20,10 +22,14 @@ if (!container) throw new Error('Root element #root not found');
 
 createRoot(container).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <I18nProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </AuthProvider>
+      </QueryClientProvider>
+    </I18nProvider>
   </StrictMode>,
 );

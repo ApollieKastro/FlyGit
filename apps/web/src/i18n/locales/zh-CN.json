@@ -1,0 +1,140 @@
+{
+  "app": {
+    "name": "FlyGit",
+    "tagline": "自托管 Git 平台"
+  },
+  "nav": {
+    "repositories": "仓库",
+    "organizations": "组织",
+    "notifications": "通知",
+    "settings": "设置",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出",
+    "profile": "个人资料"
+  },
+  "home": {
+    "title": "FlyGit — 自托管 Git 平台",
+    "subtitle": "仓库、议题、合并请求、组织与通知。完全掌控你的代码。",
+    "ctaStart": "开始使用",
+    "ctaRepos": "浏览仓库",
+    "features": {
+      "gitTransport": {
+        "title": "Git 传输",
+        "description": "Smart HTTP 与 SSH、分支、标签、blame、差异比较与文件读取。"
+      },
+      "issues": {
+        "title": "议题与标签",
+        "description": "任务、指派、标签、里程碑、评论与表情回应。"
+      },
+      "mergeRequests": {
+        "title": "合并请求",
+        "description": "差异、评审、批准以及 merge/squash/rebase 合并策略。"
+      },
+      "organizations": {
+        "title": "组织",
+        "description": "团队、角色、邀请与审计日志。"
+      },
+      "notifications": {
+        "title": "通知",
+        "description": "仓库事件与三种语言的邮件模板。"
+      },
+      "security": {
+        "title": "安全",
+        "description": "双因素认证、访问令牌、SSH 密钥、受保护分支与速率限制。"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "登录 FlyGit",
+      "identifier": "用户名或邮箱",
+      "password": "密码",
+      "totp": "双因素验证码",
+      "submit": "登录",
+      "noAccount": "还没有账号？",
+      "linkRegister": "立即注册",
+      "error": "凭据无效"
+    },
+    "register": {
+      "title": "创建账号",
+      "username": "用户名",
+      "email": "邮箱",
+      "password": "密码",
+      "acceptTerms": "我接受服务条款",
+      "submit": "注册",
+      "haveAccount": "已有账号？",
+      "linkLogin": "去登录",
+      "success": "账号已创建。请查收邮件以完成验证。"
+    },
+    "validation": {
+      "required": "必填项",
+      "emailInvalid": "邮箱格式无效",
+      "usernameInvalid": "仅限拉丁字母、数字与连字符",
+      "passwordTooShort": "至少 8 个字符",
+      "termsRequired": "必须接受条款"
+    }
+  },
+  "repo": {
+    "empty": "该仓库为空",
+    "emptyHint": "执行 git push 上传第一个提交。",
+    "code": "代码",
+    "issues": "议题",
+    "mergeRequests": "合并请求",
+    "commits": "提交",
+    "branches": "分支",
+    "tags": "标签",
+    "settings": "设置",
+    "readme": "README",
+    "clone": "克隆",
+    "files": "文件",
+    "lastCommit": "最新提交",
+    "commit": "次提交",
+    "commitsCount": "次提交"
+  },
+  "issues": {
+    "title": "议题",
+    "open": "开放",
+    "closed": "已关闭",
+    "new": "新建议题",
+    "empty": "暂无议题",
+    "emptyHint": "创建第一个议题以开始跟踪工作。",
+    "by": "作者",
+    "commented": "评论于",
+    "opened": "创建于",
+    "closedAt": "关闭于"
+  },
+  "mr": {
+    "title": "合并请求",
+    "open": "开放",
+    "merged": "已合并",
+    "closed": "已关闭",
+    "new": "新合并请求",
+    "empty": "暂无合并请求",
+    "emptyHint": "创建合并请求以提议更改。",
+    "merge": "合并",
+    "close": "关闭",
+    "reopen": "重新打开",
+    "approve": "批准",
+    "mergeable": "可合并",
+    "conflicts": "存在冲突",
+    "strategy": "合并策略",
+    "sourceBranch": "源分支",
+    "targetBranch": "目标分支"
+  },
+  "common": {
+    "loading": "加载中…",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索",
+    "back": "返回",
+    "error": "出错了",
+    "notFound": "页面未找到",
+    "public": "公开",
+    "private": "私有",
+    "stars": "星标",
+    "forks": "复刻"
+  }
+}

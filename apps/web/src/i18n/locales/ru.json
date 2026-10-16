@@ -1,0 +1,122 @@
+{
+  "app": {
+    "name": "FlyGit",
+    "tagline": "Self-hosted Git-платформа"
+  },
+  "nav": {
+    "repositories": "Репозитории",
+    "organizations": "Организации",
+    "notifications": "Уведомления",
+    "settings": "Настройки",
+    "login": "Войти",
+    "register": "Регистрация",
+    "logout": "Выйти",
+    "profile": "Профиль"
+  },
+  "home": {
+    "title": "FlyGit — self-hosted Git-платформа",
+    "subtitle": "Репозитории, issues, merge requests, организации и уведомления. Полный контроль над вашим кодом.",
+    "ctaStart": "Начать",
+    "ctaRepos": "Смотреть репозитории",
+    "features": {
+      "gitTransport": { "title": "Git-транспорт", "description": "Smart HTTP и SSH, ветки, теги, blame, сравнение и чтение файлов." },
+      "issues": { "title": "Issues и метки", "description": "Задачи, назначенные, метки, вехи, комментарии и реакции." },
+      "mergeRequests": { "title": "Merge requests", "description": "Диффы, ревью, аппрувы и стратегии слияния merge/squash/rebase." },
+      "organizations": { "title": "Организации", "description": "Команды, роли, приглашения и аудит действий." },
+      "notifications": { "title": "Уведомления", "description": "События репозиториев и почтовые шаблоны на трёх языках." },
+      "security": { "title": "Безопасность", "description": "2FA, PAT, SSH-ключи, защищённые ветки и rate limiting." }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Вход в FlyGit",
+      "identifier": "Имя пользователя или email",
+      "password": "Пароль",
+      "totp": "Код 2FA",
+      "submit": "Войти",
+      "noAccount": "Нет аккаунта?",
+      "linkRegister": "Зарегистрироваться",
+      "error": "Неверные учётные данные"
+    },
+    "register": {
+      "title": "Создать аккаунт",
+      "username": "Имя пользователя",
+      "email": "Email",
+      "password": "Пароль",
+      "acceptTerms": "Я принимаю условия использования",
+      "submit": "Зарегистрироваться",
+      "haveAccount": "Уже есть аккаунт?",
+      "linkLogin": "Войти",
+      "success": "Аккаунт создан. Проверьте почту для подтверждения."
+    },
+    "validation": {
+      "required": "Обязательное поле",
+      "emailInvalid": "Некорректный email",
+      "usernameInvalid": "Только латиница, цифры и дефис",
+      "passwordTooShort": "Минимум 8 символов",
+      "termsRequired": "Необходимо принять условия"
+    }
+  },
+  "repo": {
+    "empty": "Репозиторий пуст",
+    "emptyHint": "Выполните git push, чтобы загрузить первый коммит.",
+    "code": "Код",
+    "issues": "Issues",
+    "mergeRequests": "Merge requests",
+    "commits": "Коммиты",
+    "branches": "Ветки",
+    "tags": "Теги",
+    "settings": "Настройки",
+    "readme": "README",
+    "clone": "Клонировать",
+    "files": "Файлы",
+    "lastCommit": "Последний коммит",
+    "commit": "коммит",
+    "commitsCount": "коммитов"
+  },
+  "issues": {
+    "title": "Issues",
+    "open": "Открытые",
+    "closed": "Закрытые",
+    "new": "Новый issue",
+    "empty": "Issues отсутствуют",
+    "emptyHint": "Создайте первый issue, чтобы отслеживать задачи.",
+    "by": "автор",
+    "commented": "прокомментировано",
+    "opened": "открыто",
+    "closedAt": "закрыто"
+  },
+  "mr": {
+    "title": "Merge requests",
+    "open": "Открытые",
+    "merged": "Слитые",
+    "closed": "Закрытые",
+    "new": "Новый MR",
+    "empty": "Merge requests отсутствуют",
+    "emptyHint": "Создайте MR, чтобы предложить изменения.",
+    "merge": "Слить",
+    "close": "Закрыть",
+    "reopen": "Открыть снова",
+    "approve": "Одобрить",
+    "mergeable": "Можно слить",
+    "conflicts": "Конфликты",
+    "strategy": "Стратегия слияния",
+    "sourceBranch": "Исходная ветка",
+    "targetBranch": "Целевая ветка"
+  },
+  "common": {
+    "loading": "Загрузка…",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Изменить",
+    "search": "Поиск",
+    "back": "Назад",
+    "error": "Что-то пошло не так",
+    "notFound": "Страница не найдена",
+    "public": "Публичный",
+    "private": "Приватный",
+    "stars": "звёзд",
+    "forks": "форков"
+  }
+}

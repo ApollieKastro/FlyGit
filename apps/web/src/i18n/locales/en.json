@@ -1,0 +1,140 @@
+{
+  "app": {
+    "name": "FlyGit",
+    "tagline": "Self-hosted Git platform"
+  },
+  "nav": {
+    "repositories": "Repositories",
+    "organizations": "Organizations",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "login": "Sign in",
+    "register": "Sign up",
+    "logout": "Sign out",
+    "profile": "Profile"
+  },
+  "home": {
+    "title": "FlyGit — self-hosted Git platform",
+    "subtitle": "Repositories, issues, merge requests, organizations and notifications. Full control over your code.",
+    "ctaStart": "Get started",
+    "ctaRepos": "Browse repositories",
+    "features": {
+      "gitTransport": {
+        "title": "Git transport",
+        "description": "Smart HTTP and SSH, branches, tags, blame, diffs and file reading."
+      },
+      "issues": {
+        "title": "Issues and labels",
+        "description": "Tasks, assignees, labels, milestones, comments and reactions."
+      },
+      "mergeRequests": {
+        "title": "Merge requests",
+        "description": "Diffs, reviews, approvals and merge strategies: merge/squash/rebase."
+      },
+      "organizations": {
+        "title": "Organizations",
+        "description": "Teams, roles, invitations and audit trail."
+      },
+      "notifications": {
+        "title": "Notifications",
+        "description": "Repository events and email templates in three languages."
+      },
+      "security": {
+        "title": "Security",
+        "description": "2FA, PAT, SSH keys, protected branches and rate limiting."
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to FlyGit",
+      "identifier": "Username or email",
+      "password": "Password",
+      "totp": "2FA code",
+      "submit": "Sign in",
+      "noAccount": "No account?",
+      "linkRegister": "Sign up",
+      "error": "Invalid credentials"
+    },
+    "register": {
+      "title": "Create an account",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "acceptTerms": "I accept the terms of service",
+      "submit": "Sign up",
+      "haveAccount": "Already have an account?",
+      "linkLogin": "Sign in",
+      "success": "Account created. Check your email to confirm."
+    },
+    "validation": {
+      "required": "Required field",
+      "emailInvalid": "Invalid email",
+      "usernameInvalid": "Only latin letters, digits and dashes",
+      "passwordTooShort": "At least 8 characters",
+      "termsRequired": "You must accept the terms"
+    }
+  },
+  "repo": {
+    "empty": "This repository is empty",
+    "emptyHint": "Run git push to upload your first commit.",
+    "code": "Code",
+    "issues": "Issues",
+    "mergeRequests": "Merge requests",
+    "commits": "Commits",
+    "branches": "Branches",
+    "tags": "Tags",
+    "settings": "Settings",
+    "readme": "README",
+    "clone": "Clone",
+    "files": "Files",
+    "lastCommit": "Last commit",
+    "commit": "commit",
+    "commitsCount": "commits"
+  },
+  "issues": {
+    "title": "Issues",
+    "open": "Open",
+    "closed": "Closed",
+    "new": "New issue",
+    "empty": "No issues",
+    "emptyHint": "Create the first issue to start tracking work.",
+    "by": "by",
+    "commented": "commented",
+    "opened": "opened",
+    "closedAt": "closed"
+  },
+  "mr": {
+    "title": "Merge requests",
+    "open": "Open",
+    "merged": "Merged",
+    "closed": "Closed",
+    "new": "New MR",
+    "empty": "No merge requests",
+    "emptyHint": "Create a merge request to propose changes.",
+    "merge": "Merge",
+    "close": "Close",
+    "reopen": "Reopen",
+    "approve": "Approve",
+    "mergeable": "Mergeable",
+    "conflicts": "Conflicts",
+    "strategy": "Merge strategy",
+    "sourceBranch": "Source branch",
+    "targetBranch": "Target branch"
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "back": "Back",
+    "error": "Something went wrong",
+    "notFound": "Page not found",
+    "public": "Public",
+    "private": "Private",
+    "stars": "stars",
+    "forks": "forks"
+  }
+}

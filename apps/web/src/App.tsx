@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from './components/layout/AppLayout';
 import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
 
 /**
  * Application shell and route table.
@@ -14,10 +16,10 @@ export function App() {
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
         <Route path="repositories" element={<HomePage />} />
-        {/* Detail routes are added as pages land; keep a redirect for now. */}
+        {/* Detail routes are added as pages land; keep a placeholder for now. */}
         <Route path="repositories/:owner/:repo" element={<Placeholder name="repository" />} />
-        <Route path="login" element={<Placeholder name="login" />} />
-        <Route path="register" element={<Placeholder name="register" />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
