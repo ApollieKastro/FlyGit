@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { loginSchema, passwordSchema, registerSchema, usernameSchema } from './auth';
 import { createRepositorySchema } from './repository';
+import { createIssueSchema, updateIssueSchema, issueCommentSchema } from './issue';
+import { createMergeRequestSchema, mergeSchema } from './merge-request';
 import { roleAtLeast, ROLE_WEIGHT } from '../constants';
 
 describe('auth schemas', () => {
@@ -71,5 +73,58 @@ describe('roleAtLeast', () => {
     for (const role of ['guest', 'reporter', 'developer', 'maintainer', 'admin', 'owner']) {
       expect(ROLE_WEIGHT[role]).toBeGreaterThan(0);
     }
+  });
+});
+
+describe('issue schemas', () => {
+  it('accepts a valid issue with a title only', () => {
+    expect(createIssueSchema.safeParse({ title: 'Bug report' }).success).toBe(true);
+  });
+
+  it('rejects an empty title', () => {
+    expect(createIssueSchema.safeParse({ title: '   ' }).success).toBe(false);
+  });
+
+  it('accepts status transitions on update', () => {
+    expect(updateIssueSchema.safeParse({ status: 'closed' }).success).toBe(true);
+    expect(updateIssueSchema.safeParse({ status: 'open' }).success).toBe(true);
+    expect(updateIssueSchema.safeParse({ status: 'bogus' }).success).toBe(false);
+  });
+
+  it('requires a non-empty comment body', () => {
+    expect(issueCommentSchema.safeParse({ body: '' }).success).toBe(false);
+    expect(issueCommentSchema.safeParse({ body: 'looks good' }).success).toBe(true);
+  });
+});
+
+describe('merge request schemas', () => {
+  it('accepts a valid merge request', () => {
+    const result = createMergeRequestSchema.safeParse({
+      sourceBranch: 'feature',
+      targetBranch: 'main',
+      title: 'Add dark mode',
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.draft).toBe(false);
+      expect(result.data.autoCloseIssues).toBe(true);
+    }
+  });
+
+  it('rejects missing branches', () => {
+    expect(createMergeRequestSchema.safeParse({ title: 'x' }).success).toBe(false);
+  });
+
+  it('defaults merge strategy to merge and deletes the source branch', () => {
+    const result = mergeSchema.safeParse({});
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.strategy).toBe('merge');
+      expect(result.data.deleteSourceBranch).toBe(true);
+    }
+  });
+
+  it('rejects an unsupported merge strategy', () => {
+    expect(mergeSchema.safeParse({ strategy: 'fast-forward-only' }).success).toBe(false);
   });
 });
