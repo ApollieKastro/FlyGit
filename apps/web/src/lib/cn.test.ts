@@ -12,7 +12,8 @@ describe('cn', () => {
   });
 
   it('ignores falsy values', () => {
-    expect(cn('a', false && 'b', undefined, null)).toBe('a');
+    const skip = false;
+    expect(cn('a', skip && 'b', undefined, null)).toBe('a');
   });
 
   it('handles conditional objects', () => {
