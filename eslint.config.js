@@ -60,8 +60,6 @@ export default tseslint.config(
     settings: { react: { version: 'detect' } },
     plugins: { react, 'react-hooks': reactHooks },
     rules: {
-      ...react.rules,
-      ...reactHooks.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'error',

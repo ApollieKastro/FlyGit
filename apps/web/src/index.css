@@ -1,0 +1,96 @@
+@import 'tailwindcss';
+
+/*
+ * FlyGit design tokens (spec §13).
+ * Dark-first: `dark` is the default theme, `light` overrides via [data-theme='light'].
+ */
+:root,
+[data-theme='dark'] {
+  --bg: #0b0d12;
+  --bg-subtle: #11141b;
+  --surface: #161a23;
+  --surface-hover: #1c212d;
+  --border: #232936;
+  --border-strong: #303849;
+  --text: #e6e9ef;
+  --text-muted: #9aa3b2;
+  --text-faint: #6b7280;
+  --accent: #5b7cfa;
+  --accent-hover: #4a6cf0;
+  --accent-soft: rgb(91 124 250 / 14%);
+  --success: #3fb950;
+  --warning: #d29922;
+  --danger: #f85149;
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+[data-theme='light'] {
+  --bg: #ffffff;
+  --bg-subtle: #f6f8fa;
+  --surface: #ffffff;
+  --surface-hover: #f3f4f6;
+  --border: #d8dee4;
+  --border-strong: #b6c0cc;
+  --text: #1f2328;
+  --text-muted: #59636e;
+  --text-faint: #818b98;
+  --accent: #4a5bd6;
+  --accent-hover: #3c4cc0;
+  --accent-soft: rgb(74 91 214 / 10%);
+  --success: #1a7f37;
+  --warning: #9a6700;
+  --danger: #cf222e;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --radius-sm: var(--radius-sm);
+  --radius: var(--radius);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
