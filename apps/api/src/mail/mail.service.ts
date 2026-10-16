@@ -1,4 +1,4 @@
-import { Injectable, Logger, Module } from '@nestjs/common';
+import { Global, Injectable, Logger, Module } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
 
@@ -190,6 +190,7 @@ export class MailService {
   }
 }
 
+@Global()
 @Module({
   providers: [MailService],
   exports: [MailService],
