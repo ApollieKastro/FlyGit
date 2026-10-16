@@ -81,6 +81,14 @@ export function AppLayout() {
                 >
                   {t('nav.settings')}
                 </Link>
+                {user.role === 'admin' ? (
+                  <Link
+                    to="/admin"
+                    className="rounded-[var(--radius)] px-3 py-1.5 text-sm text-text-muted transition-colors hover:text-text"
+                  >
+                    {t('nav.admin')}
+                  </Link>
+                ) : null}
                 <Link
                   to={`/users/${user.username}`}
                   className="rounded-[var(--radius)] px-3 py-1.5 text-sm text-text-muted transition-colors hover:text-text"

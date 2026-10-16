@@ -11,7 +11,8 @@
     "login": "Войти",
     "register": "Регистрация",
     "logout": "Выйти",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "admin": "Админ"
   },
   "home": {
     "title": "FlyGit — self-hosted Git-платформа",
@@ -276,6 +277,30 @@
     "private": "Приватный",
     "stars": "звёзд",
     "forks": "форков",
-    "empty": "Здесь пока пусто"
+    "empty": "Здесь пока пусто",
+    "all": "Все",
+    "actions": "Действия",
+    "previous": "Назад",
+    "next": "Далее"
+  },
+  "admin": {
+    "title": "Админ-панель",
+    "forbidden": "Для доступа нужен статус платформенного админа.",
+    "users": "Пользователи",
+    "organizations": "Организации",
+    "repositories": "Репозитории",
+    "issues": "Issues",
+    "mergeRequests": "Merge requests",
+    "activeSessions": "Активные сессии",
+    "search": "Поиск пользователей",
+    "status": "Статус",
+    "active": "Активен",
+    "inactive": "Заблокирован",
+    "user": "Пользователь",
+    "registered": "Регистрация",
+    "noUsers": "Ничего не найдено.",
+    "activate": "Активировать",
+    "deactivate": "Деактивировать",
+    "confirmDelete": "Подтвердить удаление"
   }
 }

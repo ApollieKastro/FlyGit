@@ -11,7 +11,8 @@
     "login": "Sign in",
     "register": "Sign up",
     "logout": "Sign out",
-    "profile": "Profile"
+    "profile": "Profile",
+    "admin": "Admin"
   },
   "home": {
     "title": "FlyGit — self-hosted Git platform",
@@ -294,6 +295,30 @@
     "private": "Private",
     "stars": "stars",
     "forks": "forks",
-    "empty": "Nothing here yet"
+    "empty": "Nothing here yet",
+    "all": "All",
+    "actions": "Actions",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "admin": {
+    "title": "Admin panel",
+    "forbidden": "You need platform admin access to view this page.",
+    "users": "Users",
+    "organizations": "Organizations",
+    "repositories": "Repositories",
+    "issues": "Issues",
+    "mergeRequests": "Merge requests",
+    "activeSessions": "Active sessions",
+    "search": "Search users",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "user": "User",
+    "registered": "Registered",
+    "noUsers": "No users match.",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "confirmDelete": "Confirm delete"
   }
 }
