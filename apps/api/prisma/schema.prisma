@@ -1,0 +1,722 @@
+// FlyGit data model — PostgreSQL 16
+// Docs: docs/DATABASE.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────── Enums ───────────────────────────
+
+enum PlatformRole {
+  admin
+  user
+}
+
+enum OrgRole {
+  owner
+  maintainer
+  member
+}
+
+enum RepoRole {
+  admin
+  maintainer
+  developer
+  reporter
+  guest
+}
+
+enum Visibility {
+  public
+  private
+  internal
+}
+
+enum OwnerType {
+  user
+  organization
+}
+
+enum IssueStatus {
+  open
+  closed
+}
+
+enum MrStatus {
+  draft
+  open
+  merged
+  closed
+}
+
+enum MrReviewState {
+  pending
+  approved
+  changes_requested
+  commented
+}
+
+enum MergeStrategy {
+  merge
+  squash
+  rebase
+}
+
+enum CommentTarget {
+  issue
+  merge_request
+}
+
+// ─────────────────────────── Identity ───────────────────────────
+
+model User {
+  id                String       @id @default(uuid()) @db.Uuid
+  username          String       @unique @db.VarChar(32)
+  email             String       @unique @db.VarChar(254)
+  passwordHash      String       @map("password_hash")
+  displayName       String?      @map("display_name") @db.VarChar(64)
+  avatarUrl         String?      @map("avatar_url")
+  bio               String?      @db.VarChar(280)
+  website           String?      @db.VarChar(200)
+  role              PlatformRole @default(user)
+  isAdmin           Boolean      @default(false) @map("is_admin")
+  isActive          Boolean      @default(true) @map("is_active")
+  locale            String       @default("en") @db.VarChar(8)
+  theme             String       @default("dark") @db.VarChar(8)
+  emailConfirmToken String?      @unique @map("email_confirm_token")
+  emailConfirmedAt  DateTime?    @map("email_confirmed_at")
+  totpSecret        String?      @map("totp_secret")
+  totpEnabled       Boolean      @default(false) @map("totp_enabled")
+  totpBackupCodes   String[]     @map("totp_backup_codes")
+  lastLoginAt       DateTime?    @map("last_login_at")
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+
+  sessions          Session[]
+  passwordResetTokens PasswordResetToken[]
+  notificationPreferences NotificationPreference[]
+  sshKeys           SshKey[]
+  apiTokens         ApiToken[]
+  ownedOrganizations Organization[] @relation("OrgOwner")
+  orgMemberships    OrgMember[]
+  teamMemberships   TeamMember[]
+  repoMemberships   RepositoryMember[]
+  starredRepos      RepositoryStar[]
+  watchedRepos      RepositoryWatcher[]
+  issues            Issue[]        @relation("IssueAuthor")
+  issueAssignments  IssueAssignee[]
+  comments          Comment[]
+  mergeRequests     MergeRequest[] @relation("MrAuthor")
+  mrReviews         MergeRequestReviewer[]
+  releases          Release[]
+  notifications     Notification[] @relation("NotificationUser")
+  actorAuditLogs    AuditLog[]     @relation("AuditActor")
+  activities        Activity[]
+  wikiPages         WikiPage[]
+
+  @@map("users")
+}
+
+model Session {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  tokenHash  String    @unique @map("token_hash")
+  userAgent  String?   @map("user_agent")
+  ip         String?
+  expiresAt  DateTime  @map("expires_at")
+  lastUsedAt DateTime  @default(now()) @map("last_used_at")
+  revokedAt  DateTime? @map("revoked_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
+}
+
+model SshKey {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  title       String    @db.VarChar(100)
+  publicKey   String    @map("public_key") @db.Text
+  fingerprint String    @unique
+  createdAt   DateTime  @default(now()) @map("created_at")
+  lastUsedAt  DateTime? @map("last_used_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("ssh_keys")
+}
+
+model ApiToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  name       String    @db.VarChar(64)
+  tokenHash  String    @unique @map("token_hash")
+  prefix     String    @db.VarChar(16)
+  scopes     String[]
+  expiresAt  DateTime? @map("expires_at")
+  lastUsedAt DateTime? @map("last_used_at")
+  revokedAt  DateTime? @map("revoked_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("api_tokens")
+}
+
+// ─────────────────────────── Organizations ───────────────────────────
+
+model Organization {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @db.VarChar(64)
+  slug        String   @unique @db.VarChar(32)
+  ownerId     String   @map("owner_id") @db.Uuid
+  description String?  @db.VarChar(4000)
+  avatarUrl   String?  @map("avatar_url")
+  website     String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  owner     User         @relation("OrgOwner", fields: [ownerId], references: [id])
+  members   OrgMember[]
+  teams     Team[]
+  invitations OrgInvitation[]
+
+  @@map("organizations")
+}
+
+model OrgMember {
+  id     String   @id @default(uuid()) @db.Uuid
+  orgId  String   @map("org_id") @db.Uuid
+  userId String   @map("user_id") @db.Uuid
+  role   OrgRole  @default(member)
+  joinedAt DateTime @default(now()) @map("joined_at")
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, userId])
+  @@index([userId])
+  @@map("organization_members")
+}
+
+model Team {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String   @db.VarChar(64)
+  slug           String   @db.VarChar(64)
+  description    String?  @db.VarChar(500)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  members      TeamMember[]
+  repositories RepositoryTeam[]
+
+  @@unique([organizationId, slug])
+  @@map("teams")
+}
+
+model TeamMember {
+  id       String   @id @default(uuid()) @db.Uuid
+  teamId   String   @map("team_id") @db.Uuid
+  userId   String   @map("user_id") @db.Uuid
+  role     OrgRole  @default(member)
+  joinedAt DateTime @default(now()) @map("joined_at")
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([userId])
+  @@map("team_members")
+}
+
+model OrgInvitation {
+  id          String    @id @default(uuid()) @db.Uuid
+  orgId       String    @map("org_id") @db.Uuid
+  email       String?   @db.VarChar(254)
+  userId      String?   @map("user_id") @db.Uuid
+  role        OrgRole   @default(member)
+  tokenHash   String    @unique @map("token_hash")
+  invitedById String    @map("invited_by") @db.Uuid
+  expiresAt   DateTime  @map("expires_at")
+  acceptedAt  DateTime? @map("accepted_at")
+  declinedAt  DateTime? @map("declined_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@map("organization_invitations")
+}
+
+// ─────────────────────────── Repositories ───────────────────────────
+
+model Repository {
+  id                    String    @id @default(uuid()) @db.Uuid
+  ownerType             OwnerType @map("owner_type")
+  ownerId               String    @map("owner_id") @db.Uuid
+  name                  String    @db.VarChar(100)
+  slug                  String    @db.VarChar(100)
+  description           String?   @db.VarChar(4000)
+  visibility            Visibility @default(private)
+  defaultBranch         String    @default("main") @map("default_branch") @db.VarChar(255)
+  language              String?   @db.VarChar(32)
+  topics                String[]
+  sizeBytes             BigInt    @default(0) @map("size_bytes")
+  starsCount            Int       @default(0) @map("stars_count")
+  watchersCount         Int       @default(0) @map("watchers_count")
+  forksCount            Int       @default(0) @map("forks_count")
+  openIssuesCount       Int       @default(0) @map("open_issues_count")
+  openMergeRequestsCount Int      @default(0) @map("open_merge_requests_count")
+  forkParentId          String?   @map("fork_parent_id") @db.Uuid
+  isEmpty               Boolean   @default(true) @map("is_empty")
+  allowIssues           Boolean   @default(true) @map("allow_issues")
+  allowMergeRequests    Boolean   @default(true) @map("allow_merge_requests")
+  allowWiki             Boolean   @default(true) @map("allow_wiki")
+  allowForks            Boolean   @default(true) @map("allow_forks")
+  archivedAt            DateTime? @map("archived_at")
+  deletedAt             DateTime? @map("deleted_at")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  forkParent Repository?        @relation("ForkTree", fields: [forkParentId], references: [id])
+  forks      Repository[]        @relation("ForkTree")
+  members    RepositoryMember[]
+  teams      RepositoryTeam[]
+  stars      RepositoryStar[]
+  watchers   RepositoryWatcher[]
+  issues     Issue[]
+  labels     Label[]
+  milestones Milestone[]
+  mergeRequests MergeRequest[]
+  comments   Comment[]
+  releases   Release[]
+  webhooks   Webhook[]
+  wikiPages  WikiPage[]
+  protectedBranches ProtectedBranch[]
+  activities Activity[]
+
+  @@unique([ownerType, ownerId, slug])
+  @@index([ownerType, ownerId])
+  @@index([visibility])
+  @@map("repositories")
+}
+
+model RepositoryMember {
+  id           String   @id @default(uuid()) @db.Uuid
+  repositoryId String   @map("repository_id") @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  role         RepoRole @default(developer)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, userId])
+  @@index([userId])
+  @@map("repository_members")
+}
+
+model RepositoryTeam {
+  id           String   @id @default(uuid()) @db.Uuid
+  repositoryId String   @map("repository_id") @db.Uuid
+  teamId       String   @map("team_id") @db.Uuid
+  role         RepoRole @default(developer)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  team       Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, teamId])
+  @@map("repository_teams")
+}
+
+model RepositoryStar {
+  id           String   @id @default(uuid()) @db.Uuid
+  repositoryId String   @map("repository_id") @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, userId])
+  @@index([userId])
+  @@map("repository_stars")
+}
+
+model RepositoryWatcher {
+  id           String   @id @default(uuid()) @db.Uuid
+  repositoryId String   @map("repository_id") @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, userId])
+  @@index([userId])
+  @@map("repository_watchers")
+}
+
+model ProtectedBranch {
+  id                String   @id @default(uuid()) @db.Uuid
+  repositoryId      String   @map("repository_id") @db.Uuid
+  pattern           String   @db.VarChar(255)
+  requireApprovals  Int      @default(0) @map("require_approvals")
+  requireStatusChecks Boolean @default(false) @map("require_status_checks")
+  allowForcePush    Boolean  @default(false) @map("allow_force_push")
+  allowDeletions    Boolean  @default(false) @map("allow_deletions")
+  allowMerges       Boolean  @default(true) @map("allow_merges")
+  dismissStaleReviews Boolean @default(true) @map("dismiss_stale_reviews")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([repositoryId, pattern])
+  @@map("protected_branches")
+}
+
+// ─────────────────────────── Issues ───────────────────────────
+
+model Issue {
+  id           String      @id @default(uuid()) @db.Uuid
+  repositoryId String      @map("repository_id") @db.Uuid
+  number       Int
+  authorId     String      @map("author_id") @db.Uuid
+  title        String      @db.VarChar(200)
+  body         String?     @db.Text
+  status       IssueStatus @default(open)
+  milestoneId  String?     @map("milestone_id") @db.Uuid
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+  closedAt     DateTime?   @map("closed_at")
+
+  repository Repository   @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  author     User         @relation("IssueAuthor", fields: [authorId], references: [id])
+  milestone  Milestone?   @relation(fields: [milestoneId], references: [id])
+  labels     IssueLabel[]
+  assignees  IssueAssignee[]
+  comments   Comment[]
+
+  @@unique([repositoryId, number])
+  @@index([repositoryId, status])
+  @@map("issues")
+}
+
+model Label {
+  id           String  @id @default(uuid()) @db.Uuid
+  repositoryId String  @map("repository_id") @db.Uuid
+  name         String  @db.VarChar(50)
+  color        String  @db.VarChar(7)
+  description  String? @db.VarChar(200)
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  issues     IssueLabel[]
+
+  @@unique([repositoryId, name])
+  @@map("labels")
+}
+
+model IssueLabel {
+  issueId String @map("issue_id") @db.Uuid
+  labelId String @map("label_id") @db.Uuid
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([issueId, labelId])
+  @@map("issue_labels")
+}
+
+model IssueAssignee {
+  issueId String @map("issue_id") @db.Uuid
+  userId  String @map("user_id") @db.Uuid
+
+  issue Issue @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([issueId, userId])
+  @@map("issue_assignees")
+}
+
+model Milestone {
+  id           String       @id @default(uuid()) @db.Uuid
+  repositoryId String       @map("repository_id") @db.Uuid
+  title        String       @db.VarChar(100)
+  description  String?      @db.VarChar(4000)
+  dueOn        DateTime?    @map("due_on")
+  state        IssueStatus  @default(open)
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  issues     Issue[]
+
+  @@map("milestones")
+}
+
+// ─────────────────────────── Merge requests ───────────────────────────
+
+model MergeRequest {
+  id            String        @id @default(uuid()) @db.Uuid
+  repositoryId  String        @map("repository_id") @db.Uuid
+  number        Int
+  authorId      String        @map("author_id") @db.Uuid
+  sourceBranch  String        @map("source_branch") @db.VarChar(255)
+  targetBranch  String        @map("target_branch") @db.VarChar(255)
+  title         String        @db.VarChar(200)
+  description   String?       @db.Text
+  status        MrStatus      @default(open)
+  draft         Boolean       @default(false)
+  strategy      MergeStrategy @default(merge)
+  headSha       String        @map("head_sha") @db.VarChar(40)
+  baseSha       String        @map("base_sha") @db.VarChar(40)
+  mergeSha      String?       @map("merge_sha") @db.VarChar(40)
+  autoCloseIssues Boolean     @default(true) @map("auto_close_issues")
+  mergedById    String?       @map("merged_by") @db.Uuid
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  mergedAt      DateTime?     @map("merged_at")
+  closedAt      DateTime?     @map("closed_at")
+
+  repository Repository          @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  author     User                @relation("MrAuthor", fields: [authorId], references: [id])
+  reviewers  MergeRequestReviewer[]
+  comments   Comment[]
+
+  @@unique([repositoryId, number])
+  @@index([repositoryId, status])
+  @@map("merge_requests")
+}
+
+model MergeRequestReviewer {
+  id       String         @id @default(uuid()) @db.Uuid
+  mrId     String         @map("mr_id") @db.Uuid
+  userId   String         @map("user_id") @db.Uuid
+  state    MrReviewState  @default(pending)
+  updatedAt DateTime      @updatedAt @map("updated_at")
+
+  mergeRequest MergeRequest @relation(fields: [mrId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([mrId, userId])
+  @@map("merge_request_reviewers")
+}
+
+model Comment {
+  id              String        @id @default(uuid()) @db.Uuid
+  repositoryId    String        @map("repository_id") @db.Uuid
+  target          CommentTarget
+  issueId         String?       @map("issue_id") @db.Uuid
+  mergeRequestId  String?       @map("merge_request_id") @db.Uuid
+  authorId        String        @map("author_id") @db.Uuid
+  body            String        @db.Text
+  parentId        String?       @map("parent_id") @db.Uuid
+  // Review-thread anchoring (null for general comments)
+  filePath        String?       @map("file_path") @db.VarChar(1024)
+  line            Int?
+  side            String        @default("new") @db.VarChar(3)
+  resolvedAt      DateTime?     @map("resolved_at")
+  editedAt        DateTime?     @map("edited_at")
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  repository    Repository    @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  issue         Issue?        @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  mergeRequest  MergeRequest? @relation(fields: [mergeRequestId], references: [id], onDelete: Cascade)
+  author        User          @relation(fields: [authorId], references: [id])
+  parent        Comment?      @relation("CommentTree", fields: [parentId], references: [id])
+  replies       Comment[]     @relation("CommentTree")
+  reactions     Reaction[]
+
+  @@index([issueId])
+  @@index([mergeRequestId])
+  @@map("comments")
+}
+
+model Reaction {
+  id        String   @id @default(uuid()) @db.Uuid
+  commentId String   @map("comment_id") @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  emoji     String   @db.VarChar(16)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId, emoji])
+  @@map("reactions")
+}
+
+// ─────────────────────────── Content ───────────────────────────
+
+model Release {
+  id          String    @id @default(uuid()) @db.Uuid
+  repositoryId String   @map("repository_id") @db.Uuid
+  tagName     String    @map("tag_name") @db.VarChar(255)
+  name        String    @db.VarChar(200)
+  description String?   @db.Text
+  draft       Boolean   @default(false)
+  prerelease  Boolean   @default(false)
+  authorId    String    @map("author_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at")
+  publishedAt DateTime? @map("published_at")
+
+  repository Repository    @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  author     User          @relation(fields: [authorId], references: [id])
+  assets     ReleaseAsset[]
+
+  @@unique([repositoryId, tagName])
+  @@map("releases")
+}
+
+model ReleaseAsset {
+  id            String   @id @default(uuid()) @db.Uuid
+  releaseId     String   @map("release_id") @db.Uuid
+  name          String   @db.VarChar(255)
+  storageKey    String   @map("storage_key")
+  contentType   String   @map("content_type") @db.VarChar(128)
+  size          BigInt
+  downloadCount Int      @default(0) @map("download_count")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  release Release @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+
+  @@map("release_assets")
+}
+
+model WikiPage {
+  id           String   @id @default(uuid()) @db.Uuid
+  repositoryId String   @map("repository_id") @db.Uuid
+  slug         String   @db.VarChar(200)
+  title        String   @db.VarChar(200)
+  content      String   @db.Text
+  authorId     String   @map("author_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  author     User       @relation(fields: [authorId], references: [id])
+
+  @@unique([repositoryId, slug])
+  @@map("wiki_pages")
+}
+
+model Webhook {
+  id           String   @id @default(uuid()) @db.Uuid
+  repositoryId String   @map("repository_id") @db.Uuid
+  url          String
+  secret       String?
+  events       String[]
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  repository Repository         @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  deliveries WebhookDelivery[]
+
+  @@map("webhooks")
+}
+
+model WebhookDelivery {
+  id          String   @id @default(uuid()) @db.Uuid
+  webhookId   String   @map("webhook_id") @db.Uuid
+  event       String   @db.VarChar(50)
+  payload     Json
+  responseCode Int?    @map("response_code")
+  success     Boolean  @default(false)
+  error       String?
+  durationMs  Int      @map("duration_ms")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  webhook Webhook @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId])
+  @@map("webhook_deliveries")
+}
+
+// ─────────────────────────── Platform ───────────────────────────
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  type      String   @db.VarChar(50)
+  title     String   @db.VarChar(200)
+  body      String?  @db.Text
+  url       String   @db.VarChar(1024)
+  isRead    Boolean  @default(false) @map("is_read")
+  actorId   String?  @map("actor_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user  User @relation("NotificationUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+model NotificationPreference {
+  id     String  @id @default(uuid()) @db.Uuid
+  userId String  @map("user_id") @db.Uuid
+  type   String  @db.VarChar(50)
+  inApp  Boolean @default(true) @map("in_app")
+  email  Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
+  @@map("notification_preferences")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String?  @map("actor_id") @db.Uuid
+  action     String   @db.VarChar(100)
+  entityType String   @map("entity_type") @db.VarChar(50)
+  entityId   String?  @map("entity_id") @db.Uuid
+  metadata   Json?
+  ip         String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([actorId])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+model Activity {
+  id           String   @id @default(uuid()) @db.Uuid
+  repositoryId String?  @map("repository_id") @db.Uuid
+  actorId      String   @map("actor_id") @db.Uuid
+  type         String   @db.VarChar(50)
+  payload      Json
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  repository Repository? @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  actor      User        @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([repositoryId, createdAt])
+  @@index([actorId, createdAt])
+  @@map("activities")
+}
