@@ -135,6 +135,7 @@
     "public": "公开",
     "private": "私有",
     "stars": "星标",
-    "forks": "复刻"
+    "forks": "复刻",
+    "empty": "这里还没有内容"
   }
 }

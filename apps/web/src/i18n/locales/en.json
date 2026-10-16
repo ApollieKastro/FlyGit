@@ -135,6 +135,7 @@
     "public": "Public",
     "private": "Private",
     "stars": "stars",
-    "forks": "forks"
+    "forks": "forks",
+    "empty": "Nothing here yet"
   }
 }
