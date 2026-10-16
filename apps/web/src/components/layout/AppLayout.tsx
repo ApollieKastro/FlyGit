@@ -29,6 +29,11 @@ export function AppLayout() {
             <Link to="/repositories" className="hover:text-text">
               {t('nav.repositories')}
             </Link>
+            {user ? (
+              <Link to="/repositories/new" className="hover:text-text">
+                {t('repo.new')}
+              </Link>
+            ) : null}
           </nav>
 
           <div className="ml-auto flex items-center gap-2">

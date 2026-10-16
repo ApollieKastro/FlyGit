@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   CommitSummary,
+  CreateRepositoryInput,
   FileContent,
   FileEntry,
   GitRef,
@@ -106,5 +107,28 @@ export function useCommits(owner: string, repo: string, ref?: string, page = 1) 
         `/repositories/${owner}/${repo}/commits${buildQuery({ ref, page })}`,
       ),
     enabled: Boolean(owner && repo),
+  });
+}
+
+export function useCreateRepository() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: CreateRepositoryInput) => api.post<RepositoryDetail>('/repositories', input),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ['repositories'] });
+    },
+  });
+}
+
+export function useToggleStar(owner: string, repo: string, starred: boolean) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () =>
+      starred
+        ? api.delete<void>(`/repositories/${owner}/${repo}/star`)
+        : api.post<void>(`/repositories/${owner}/${repo}/star`),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ['repository', owner, repo] });
+    },
   });
 }

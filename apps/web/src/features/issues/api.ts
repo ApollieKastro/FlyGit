@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import type { Issue, Paginated } from '@flygit/shared';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { Issue, IssueComment, Paginated } from '@flygit/shared';
 import { api } from '../../lib/api';
 
 interface IssueListParams {
@@ -34,5 +34,53 @@ export function useIssue(owner: string, repo: string, number: number | string) {
     queryKey: ['issue', owner, repo, number],
     queryFn: () => api.get<Issue>(`/repositories/${owner}/${repo}/issues/${number}`),
     enabled: Boolean(owner && repo && number),
+  });
+}
+
+export function useIssueComments(owner: string, repo: string, number: number | string) {
+  return useQuery({
+    queryKey: ['issue-comments', owner, repo, number],
+    queryFn: () =>
+      api.get<IssueComment[]>(`/repositories/${owner}/${repo}/issues/${number}/comments`),
+    enabled: Boolean(owner && repo && number),
+  });
+}
+
+function useInvalidateIssue(owner: string, repo: string, number: number | string) {
+  const qc = useQueryClient();
+  return () => {
+    void qc.invalidateQueries({ queryKey: ['issue', owner, repo, number] });
+    void qc.invalidateQueries({ queryKey: ['issue-comments', owner, repo, number] });
+    void qc.invalidateQueries({ queryKey: ['issues', owner, repo] });
+  };
+}
+
+/** Close or reopen an issue depending on its current status. */
+export function useToggleIssueStatus(owner: string, repo: string, number: number | string) {
+  const invalidate = useInvalidateIssue(owner, repo, number);
+  return useMutation({
+    mutationFn: (status: 'open' | 'closed') =>
+      api.patch<Issue>(`/repositories/${owner}/${repo}/issues/${number}`, { status }),
+    onSuccess: invalidate,
+  });
+}
+
+export function useAddIssueComment(owner: string, repo: string, number: number | string) {
+  const invalidate = useInvalidateIssue(owner, repo, number);
+  return useMutation({
+    mutationFn: (body: string) =>
+      api.post<IssueComment>(`/repositories/${owner}/${repo}/issues/${number}/comments`, { body }),
+    onSuccess: invalidate,
+  });
+}
+
+export function useCreateIssue(owner: string, repo: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { title: string; body?: string | null }) =>
+      api.post<Issue>(`/repositories/${owner}/${repo}/issues`, input),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ['issues', owner, repo] });
+    },
   });
 }

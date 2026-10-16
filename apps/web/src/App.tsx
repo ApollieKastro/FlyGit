@@ -5,6 +5,8 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { RepositoriesPage } from './pages/RepositoriesPage';
 import { RepositoryPage } from './pages/RepositoryPage';
+import { CreateRepositoryPage } from './pages/CreateRepositoryPage';
+import { UserProfilePage } from './pages/UserProfilePage';
 
 /**
  * Application shell and route table.
@@ -18,7 +20,9 @@ export function App() {
       <Route element={<AppLayout />}>
         <Route index element={<HomePage />} />
         <Route path="repositories" element={<RepositoriesPage />} />
+        <Route path="repositories/new" element={<CreateRepositoryPage />} />
         <Route path="repositories/:owner/:repo/*" element={<RepositoryPage />} />
+        <Route path="users/:username" element={<UserProfilePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />

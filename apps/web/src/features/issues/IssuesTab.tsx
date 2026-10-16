@@ -35,6 +35,12 @@ export function IssuesTab({ owner, repo }: { owner: string; repo: string }) {
           placeholder={t('common.search')}
           className="ml-auto w-56 rounded-[var(--radius)] border border-border bg-bg-subtle px-3 py-1.5 text-sm placeholder:text-text-faint focus:border-accent focus:outline-none"
         />
+        <Link
+          to={`/repositories/${owner}/${repo}/issues/new`}
+          className="rounded-[var(--radius)] bg-accent px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+        >
+          {t('issues.new')}
+        </Link>
       </div>
 
       <div className="mt-4 divide-y divide-border rounded-[var(--radius-md)] border border-border">
