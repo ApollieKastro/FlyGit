@@ -3,6 +3,7 @@ import type { NotificationType } from '@flygit/shared';
 import { NOTIFICATION_TYPES } from '@flygit/shared';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailService, type MailLocale } from '../mail/mail.service';
+import { NotificationsController } from './notifications.controller';
 
 export interface CreateNotificationInput {
   userId: string;
@@ -151,6 +152,7 @@ export function extractMentions(text: string): string[] {
 
 @Global()
 @Module({
+  controllers: [NotificationsController],
   providers: [NotificationService],
   exports: [NotificationService],
 })
