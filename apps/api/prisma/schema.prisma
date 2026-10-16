@@ -291,6 +291,8 @@ model Repository {
   forksCount            Int       @default(0) @map("forks_count")
   openIssuesCount       Int       @default(0) @map("open_issues_count")
   openMergeRequestsCount Int      @default(0) @map("open_merge_requests_count")
+  lastIssueNumber       Int       @default(0) @map("last_issue_number")
+  lastMergeRequestNumber Int      @default(0) @map("last_merge_request_number")
   forkParentId          String?   @map("fork_parent_id") @db.Uuid
   isEmpty               Boolean   @default(true) @map("is_empty")
   allowIssues           Boolean   @default(true) @map("allow_issues")
@@ -466,6 +468,7 @@ model IssueAssignee {
 model Milestone {
   id           String       @id @default(uuid()) @db.Uuid
   repositoryId String       @map("repository_id") @db.Uuid
+  slug         String       @db.VarChar(64)
   title        String       @db.VarChar(100)
   description  String?      @db.VarChar(4000)
   dueOn        DateTime?    @map("due_on")
@@ -475,6 +478,7 @@ model Milestone {
   repository Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
   issues     Issue[]
 
+  @@unique([repositoryId, slug])
   @@map("milestones")
 }
 

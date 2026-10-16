@@ -62,6 +62,8 @@ export type OwnerType = (typeof OWNER_TYPES)[number];
 /** In-app notification types. */
 export const NOTIFICATION_TYPES = [
   'mention',
+  'issue_opened',
+  'issue_closed',
   'issue_comment',
   'issue_assigned',
   'mr_opened',
