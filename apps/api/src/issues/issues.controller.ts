@@ -22,6 +22,7 @@ import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
 import { OptionalUser } from '../common/decorators/optional-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
+import { parseNumberParam } from '../common/utils/param.util';
 import { IssuesService } from './issues.service';
 
 @Controller('repositories/:owner/:repo')
@@ -49,7 +50,7 @@ export class IssuesController {
     @Param('repo') repo: string,
     @Param('number') number: string,
   ) {
-    return this.issues.get(user, owner, repo, Number(number));
+    return this.issues.get(user, owner, repo, parseNumberParam(number, 'Issue'));
   }
 
   @Post('issues')
@@ -71,7 +72,7 @@ export class IssuesController {
     @Param('number') number: string,
     @Body(new ZodValidationPipe(updateIssueSchema)) input: UpdateIssueInput,
   ) {
-    return this.issues.update(user, owner, repo, Number(number), input);
+    return this.issues.update(user, owner, repo, parseNumberParam(number, 'Issue'), input);
   }
 
   @Delete('issues/:number')
@@ -82,7 +83,7 @@ export class IssuesController {
     @Param('repo') repo: string,
     @Param('number') number: string,
   ) {
-    return this.issues.remove(user, owner, repo, Number(number));
+    return this.issues.remove(user, owner, repo, parseNumberParam(number, 'Issue'));
   }
 
   // ───────────────────────── Comments ─────────────────────────
@@ -95,7 +96,7 @@ export class IssuesController {
     @Param('repo') repo: string,
     @Param('number') number: string,
   ) {
-    return this.issues.listComments(user, owner, repo, Number(number));
+    return this.issues.listComments(user, owner, repo, parseNumberParam(number, 'Issue'));
   }
 
   @Post('issues/:number/comments')
@@ -107,7 +108,7 @@ export class IssuesController {
     @Param('number') number: string,
     @Body(new ZodValidationPipe(issueCommentSchema)) body: { body: string },
   ) {
-    return this.issues.addComment(user, owner, repo, Number(number), body.body);
+    return this.issues.addComment(user, owner, repo, parseNumberParam(number, 'Issue'), body.body);
   }
 
   @Patch('issues/comments/:commentId')

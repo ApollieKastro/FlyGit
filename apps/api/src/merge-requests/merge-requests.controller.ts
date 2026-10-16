@@ -29,6 +29,7 @@ import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
 import { OptionalUser } from '../common/decorators/optional-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
+import { parseNumberParam } from '../common/utils/param.util';
 import { MergeRequestsService } from './merge-requests.service';
 
 @Controller('repositories/:owner/:repo/merge-requests')
@@ -65,7 +66,7 @@ export class MergeRequestsController {
     @Param('repo') repo: string,
     @Param('number') number: string,
   ) {
-    return this.mrs.get(user, owner, repo, Number(number));
+    return this.mrs.get(user, owner, repo, parseNumberParam(number, 'Merge request'));
   }
 
   @Patch(':number')
@@ -76,19 +77,19 @@ export class MergeRequestsController {
     @Param('number') number: string,
     @Body(new ZodValidationPipe(updateMergeRequestSchema)) input: UpdateMergeRequestInput,
   ) {
-    return this.mrs.update(user, owner, repo, Number(number), input);
+    return this.mrs.update(user, owner, repo, parseNumberParam(number, 'Merge request'), input);
   }
 
   @Post(':number/close')
   @HttpCode(200)
   close(@CurrentUser() user: AuthUser, @Param('owner') owner: string, @Param('repo') repo: string, @Param('number') number: string) {
-    return this.mrs.close(user, owner, repo, Number(number));
+    return this.mrs.close(user, owner, repo, parseNumberParam(number, 'Merge request'));
   }
 
   @Post(':number/reopen')
   @HttpCode(200)
   reopen(@CurrentUser() user: AuthUser, @Param('owner') owner: string, @Param('repo') repo: string, @Param('number') number: string) {
-    return this.mrs.reopen(user, owner, repo, Number(number));
+    return this.mrs.reopen(user, owner, repo, parseNumberParam(number, 'Merge request'));
   }
 
   @Public()
@@ -101,7 +102,7 @@ export class MergeRequestsController {
     @Query('page') page?: string,
     @Query('pageSize') pageSize?: string,
   ) {
-    return this.mrs.diff(user, owner, repo, Number(number), {
+    return this.mrs.diff(user, owner, repo, parseNumberParam(number, 'Merge request'), {
       page: page ? Number(page) : undefined,
       pageSize: pageSize ? Number(pageSize) : undefined,
     });
@@ -115,7 +116,7 @@ export class MergeRequestsController {
     @Param('repo') repo: string,
     @Param('number') number: string,
   ) {
-    return this.mrs.commits(user, owner, repo, Number(number));
+    return this.mrs.commits(user, owner, repo, parseNumberParam(number, 'Merge request'));
   }
 
   // ───────────────────────── Reviews ─────────────────────────
@@ -129,7 +130,7 @@ export class MergeRequestsController {
     @Param('number') number: string,
     @Body(new ZodValidationPipe(reviewSchema)) input: ReviewInput,
   ) {
-    return this.mrs.review(user, owner, repo, Number(number), input);
+    return this.mrs.review(user, owner, repo, parseNumberParam(number, 'Merge request'), input);
   }
 
   // ───────────────────────── Comments ─────────────────────────
@@ -142,7 +143,7 @@ export class MergeRequestsController {
     @Param('repo') repo: string,
     @Param('number') number: string,
   ) {
-    return this.mrs.listComments(user, owner, repo, Number(number));
+    return this.mrs.listComments(user, owner, repo, parseNumberParam(number, 'Merge request'));
   }
 
   @Post(':number/comments')
@@ -154,7 +155,7 @@ export class MergeRequestsController {
     @Param('number') number: string,
     @Body(new ZodValidationPipe(reviewCommentSchema)) input: ReviewCommentInput,
   ) {
-    return this.mrs.addComment(user, owner, repo, Number(number), input);
+    return this.mrs.addComment(user, owner, repo, parseNumberParam(number, 'Merge request'), input);
   }
 
   @Post('comments/:commentId/resolve')
@@ -179,6 +180,6 @@ export class MergeRequestsController {
     @Param('number') number: string,
     @Body(new ZodValidationPipe(mergeSchema)) input: MergeInput,
   ) {
-    return this.mrs.merge(user, owner, repo, Number(number), input);
+    return this.mrs.merge(user, owner, repo, parseNumberParam(number, 'Merge request'), input);
   }
 }
