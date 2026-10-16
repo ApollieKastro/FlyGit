@@ -1,5 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../features/auth/AuthContext';
+import { useUnreadCount } from '../../features/notifications/api';
 import { useI18n, LOCALES, LOCALE_LABELS, type Locale } from '../../i18n/i18n';
 import { Button } from '../ui/Button';
 
@@ -11,6 +12,8 @@ export function AppLayout() {
   const { user, initializing, logout } = useAuth();
   const { t, locale, setLocale } = useI18n();
   const navigate = useNavigate();
+  const { data: unread } = useUnreadCount(Boolean(user));
+  const unreadCount = unread?.count ?? 0;
 
   async function handleLogout() {
     await logout();
@@ -57,6 +60,21 @@ export function AppLayout() {
 
             {initializing ? null : user ? (
               <div className="flex items-center gap-2">
+                <Link
+                  to="/notifications"
+                  aria-label={t('notifications.title')}
+                  className="relative rounded-[var(--radius)] px-2 py-1.5 text-text-muted transition-colors hover:text-text"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                  </svg>
+                  {unreadCount > 0 ? (
+                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-medium leading-none text-white">
+                      {unreadCount > 99 ? '99+' : unreadCount}
+                    </span>
+                  ) : null}
+                </Link>
                 <Link
                   to="/settings"
                   className="rounded-[var(--radius)] px-3 py-1.5 text-sm text-text-muted transition-colors hover:text-text"

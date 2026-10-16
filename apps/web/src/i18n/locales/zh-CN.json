@@ -272,6 +272,14 @@
     "yourRole": "您的角色",
     "viewRepos": "查看仓库"
   },
+  "notifications": {
+    "title": "通知",
+    "unreadOnly": "仅未读",
+    "markAllRead": "全部标为已读",
+    "markRead": "标为已读",
+    "markUnread": "标为未读",
+    "empty": "暂无通知。"
+  },
   "common": {
     "loading": "加载中…",
     "save": "保存",

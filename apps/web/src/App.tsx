@@ -10,6 +10,7 @@ import { UserProfilePage } from './pages/UserProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { OrganizationsPage } from './pages/OrganizationsPage';
 import { OrganizationDetailPage } from './pages/OrganizationDetailPage';
+import { NotificationsPage } from './pages/NotificationsPage';
 
 /**
  * Application shell and route table.
@@ -28,6 +29,7 @@ export function App() {
         <Route path="users/:username" element={<UserProfilePage />} />
         <Route path="organizations" element={<OrganizationsPage />} />
         <Route path="organizations/:slug" element={<OrganizationDetailPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />

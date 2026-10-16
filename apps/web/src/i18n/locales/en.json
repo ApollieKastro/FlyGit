@@ -272,6 +272,14 @@
     "yourRole": "Your role",
     "viewRepos": "View repositories"
   },
+  "notifications": {
+    "title": "Notifications",
+    "unreadOnly": "Unread only",
+    "markAllRead": "Mark all read",
+    "markRead": "Mark as read",
+    "markUnread": "Mark as unread",
+    "empty": "No notifications."
+  },
   "common": {
     "loading": "Loading…",
     "save": "Save",
