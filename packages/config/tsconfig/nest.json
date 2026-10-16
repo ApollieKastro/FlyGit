@@ -6,6 +6,7 @@
     "moduleResolution": "Node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "useDefineForClassFields": false,
     "target": "ES2022",
     "strictPropertyInitialization": false,
     "outDir": "./dist",
