@@ -20,7 +20,7 @@ async function bootstrap(): Promise<void> {
 
   app.setGlobalPrefix('api/v1', {
     // Git transport and healthchecks live at well-known root paths.
-    exclude: ['healthz', 'healthz/ready', 'git', 'git/(.*)'],
+    exclude: ['healthz', 'healthz/ready', 'git', 'git/{*path}'],
   });
   app.use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: false }));
   app.enableCors({
