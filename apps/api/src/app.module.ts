@@ -13,7 +13,7 @@ import { RepositoriesModule } from './repositories/repositories.module';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { IssuesModule } from './issues/issues.module';
 import { MergeRequestsModule } from './merge-requests/merge-requests.module';
-import { NotificationModule } from './notifications/notification.service';
+import { NotificationModule } from './notifications/notifications.module';
 import { AdminModule } from './admin/admin.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { RateLimitGuard } from './auth/rate-limit.guard';

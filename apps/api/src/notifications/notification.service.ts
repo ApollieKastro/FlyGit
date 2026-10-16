@@ -1,9 +1,8 @@
-import { Global, Injectable, Logger, Module } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import type { NotificationType } from '@flygit/shared';
 import { NOTIFICATION_TYPES } from '@flygit/shared';
 import { PrismaService } from '../prisma/prisma.service';
 import { MailService, type MailLocale } from '../mail/mail.service';
-import { NotificationsController } from './notifications.controller';
 
 export interface CreateNotificationInput {
   userId: string;
@@ -149,11 +148,3 @@ export function extractMentions(text: string): string[] {
   const matches = text.match(/@([a-zA-Z0-9](?:[a-zA-Z0-9-]{1,30}[a-zA-Z0-9])?)/g) ?? [];
   return [...new Set(matches.map((m) => m.slice(1).toLowerCase()))];
 }
-
-@Global()
-@Module({
-  controllers: [NotificationsController],
-  providers: [NotificationService],
-  exports: [NotificationService],
-})
-export class NotificationModule {}
