@@ -45,6 +45,8 @@ export class JwtAuthGuard implements CanActivate {
       });
     }
 
+    // A token was sent: always verify it, even on @Public routes, so that
+    // optional-auth endpoints (@OptionalUser) receive a trusted identity.
     request.user = this.tokens.verifyAccessToken(token);
     return true;
   }

@@ -9,6 +9,7 @@ import { MailModule } from './mail/mail.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { GitModule } from './git/git.module';
+import { RepositoriesModule } from './repositories/repositories.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { RateLimitGuard } from './auth/rate-limit.guard';
 import { PlatformAdminGuard } from './common/guards/platform-admin.guard';
@@ -41,6 +42,7 @@ import { HealthController } from './health/health.controller';
     AuthModule,
     UsersModule,
     GitModule,
+    RepositoriesModule,
   ],
   controllers: [HealthController],
   providers: [

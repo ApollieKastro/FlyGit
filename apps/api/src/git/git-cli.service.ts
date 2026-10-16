@@ -194,6 +194,29 @@ export class GitCliService {
     return { commits, total };
   }
 
+  /** Commit list for an explicit range (used by compare/MR views). */
+  async listCommitsRange(repoDir: string, range: string): Promise<CommitSummary[]> {
+    const format = ['%H', '%h', '%an', '%ae', '%at', '%cn', '%ce', '%ct', '%P', '%s'].join(FS);
+    const result = await this.run(['log', `--format=${format}${RS}`, range], repoDir);
+    if (result.code !== 0) return [];
+    return result.stdout
+      .split(RS)
+      .map((chunk) => chunk.trim())
+      .filter(Boolean)
+      .map((chunk) => {
+        const [sha, shortSha, an, ae, at, cn, ce, ct, parents, subject] = chunk.split(FS);
+        return {
+          sha: sha!,
+          shortSha: shortSha!,
+          message: subject ?? '',
+          author: { name: an ?? '', email: ae ?? '', username: null },
+          authoredAt: new Date(Number(at) * 1000).toISOString(),
+          committedAt: new Date(Number(ct) * 1000).toISOString(),
+          parents: (parents ?? '').split(' ').filter(Boolean),
+        } satisfies CommitSummary;
+      });
+  }
+
   async getCommit(repoDir: string, sha: string): Promise<(CommitSummary & { body: string }) | null> {
     const format = ['%H', '%h', '%an', '%ae', '%at', '%cn', '%ce', '%ct', '%P', '%s', '%b'].join(FS);
     const result = await this.run(['show', '-s', `--format=${format}`, sha], repoDir);
