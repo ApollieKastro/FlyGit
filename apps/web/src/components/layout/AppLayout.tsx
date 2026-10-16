@@ -53,6 +53,12 @@ export function AppLayout() {
             {initializing ? null : user ? (
               <div className="flex items-center gap-2">
                 <Link
+                  to="/settings"
+                  className="rounded-[var(--radius)] px-3 py-1.5 text-sm text-text-muted transition-colors hover:text-text"
+                >
+                  {t('nav.settings')}
+                </Link>
+                <Link
                   to={`/users/${user.username}`}
                   className="rounded-[var(--radius)] px-3 py-1.5 text-sm text-text-muted transition-colors hover:text-text"
                 >

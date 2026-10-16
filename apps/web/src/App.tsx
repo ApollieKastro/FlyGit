@@ -7,6 +7,7 @@ import { RepositoriesPage } from './pages/RepositoriesPage';
 import { RepositoryPage } from './pages/RepositoryPage';
 import { CreateRepositoryPage } from './pages/CreateRepositoryPage';
 import { UserProfilePage } from './pages/UserProfilePage';
+import { SettingsPage } from './pages/SettingsPage';
 
 /**
  * Application shell and route table.
@@ -23,6 +24,7 @@ export function App() {
         <Route path="repositories/new" element={<CreateRepositoryPage />} />
         <Route path="repositories/:owner/:repo/*" element={<RepositoryPage />} />
         <Route path="users/:username" element={<UserProfilePage />} />
+        <Route path="settings" element={<SettingsPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
