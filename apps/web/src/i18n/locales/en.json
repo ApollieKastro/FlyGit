@@ -107,8 +107,36 @@
     "watch": "Watch",
     "unwatch": "Unwatch",
     "fork": "Fork",
+    "releases": "Releases",
+    "compare": "Compare",
     "cloneHttp": "Clone over HTTPS",
     "cloneSsh": "Clone over SSH"
+  },
+  "branches": {
+    "newName": "New branch name",
+    "from": "From branch",
+    "create": "Create branch",
+    "empty": "No branches yet.",
+    "default": "default",
+    "protected": "protected"
+  },
+  "releases": {
+    "new": "Create a new release",
+    "tagName": "Tag name",
+    "name": "Release title",
+    "description": "Description",
+    "prerelease": "Pre-release",
+    "draft": "Draft",
+    "publish": "Publish release",
+    "empty": "No releases yet."
+  },
+  "compare": {
+    "base": "Base",
+    "head": "Compare",
+    "selectRef": "Select a branch",
+    "pickBase": "Select a base branch to compare.",
+    "commits": "Commits",
+    "noChanges": "No changes between these refs."
   },
   "issues": {
     "title": "Issues",

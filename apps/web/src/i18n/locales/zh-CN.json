@@ -107,8 +107,36 @@
     "watch": "关注",
     "unwatch": "取消关注",
     "fork": "复刻",
+    "releases": "发行版",
+    "compare": "比较",
     "cloneHttp": "通过 HTTPS 克隆",
     "cloneSsh": "通过 SSH 克隆"
+  },
+  "branches": {
+    "newName": "新分支名称",
+    "from": "来源分支",
+    "create": "创建分支",
+    "empty": "暂无分支。",
+    "default": "默认",
+    "protected": "受保护"
+  },
+  "releases": {
+    "new": "创建新发行版",
+    "tagName": "标签名称",
+    "name": "发行版标题",
+    "description": "描述",
+    "prerelease": "预发布",
+    "draft": "草稿",
+    "publish": "发布发行版",
+    "empty": "暂无发行版。"
+  },
+  "compare": {
+    "base": "基准",
+    "head": "比较",
+    "selectRef": "选择分支",
+    "pickBase": "选择要比较的基准分支。",
+    "commits": "提交",
+    "noChanges": "这些引用之间没有更改。"
   },
   "issues": {
     "title": "议题",

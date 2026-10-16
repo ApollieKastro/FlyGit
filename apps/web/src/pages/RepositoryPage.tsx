@@ -10,6 +10,10 @@ import { CreateIssuePage } from './CreateIssuePage';
 import { MergeRequestDetailPage } from './MergeRequestDetailPage';
 import { CreateMergeRequestPage } from './CreateMergeRequestPage';
 import { RepoSettingsPage } from './RepoSettingsPage';
+import { BranchesTab } from '../features/repo/BranchesTab';
+import { ReleasesTab } from '../features/repo/ReleasesTab';
+import { CompareTab } from '../features/repo/CompareTab';
+import { ForkButton } from '../features/repo/ForkButton';
 
 /** Repository detail shell at `/repositories/:owner/:repo` with sub-tabs. */
 export function RepositoryPage() {
@@ -55,6 +59,9 @@ export function RepositoryPage() {
           <span>
             {data.openMergeRequestsCount} {t('repo.mergeRequests').toLowerCase()}
           </span>
+          <span className="ml-auto">
+            <ForkButton owner={owner} repo={repo} />
+          </span>
         </div>
       </header>
 
@@ -73,6 +80,9 @@ function RepoTabs({ owner, repo, defaultBranch }: { owner: string; repo: string;
         </TabLink>
         <TabLink to={`/repositories/${owner}/${repo}/issues`}>{t('repo.issues')}</TabLink>
         <TabLink to={`/repositories/${owner}/${repo}/merge-requests`}>{t('repo.mergeRequests')}</TabLink>
+        <TabLink to={`/repositories/${owner}/${repo}/branches`}>{t('repo.branches')}</TabLink>
+        <TabLink to={`/repositories/${owner}/${repo}/releases`}>{t('repo.releases')}</TabLink>
+        <TabLink to={`/repositories/${owner}/${repo}/compare`}>{t('repo.compare')}</TabLink>
         <TabLink to={`/repositories/${owner}/${repo}/settings`}>{t('repo.settings')}</TabLink>
       </nav>
       <div className="mt-6">
@@ -84,6 +94,9 @@ function RepoTabs({ owner, repo, defaultBranch }: { owner: string; repo: string;
           <Route path="merge-requests" element={<MergeRequestsTab owner={owner} repo={repo} />} />
           <Route path="merge-requests/new" element={<CreateMergeRequestPage />} />
           <Route path="merge-requests/:number" element={<MergeRequestDetailPage />} />
+          <Route path="branches" element={<BranchesTab owner={owner} repo={repo} defaultBranch={defaultBranch} />} />
+          <Route path="releases" element={<ReleasesTab owner={owner} repo={repo} />} />
+          <Route path="compare" element={<CompareTab owner={owner} repo={repo} defaultBranch={defaultBranch} />} />
           <Route path="settings" element={<RepoSettingsPage />} />
           <Route path="*" element={<Navigate to={`/repositories/${owner}/${repo}`} replace />} />
         </Routes>
