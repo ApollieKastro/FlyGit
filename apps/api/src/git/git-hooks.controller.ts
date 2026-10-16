@@ -11,6 +11,7 @@ import { z } from 'zod';
 import type { RepoRole } from '@flygit/shared';
 import { roleAtLeast } from '@flygit/shared';
 import { PrismaService } from '../prisma/prisma.service';
+import { Public } from '../common/decorators/public.decorator';
 import { GitCliService } from './git-cli.service';
 import { GitStorageService } from './git-storage.service';
 import { RepositoryAccessService } from './repository-access.service';
@@ -40,6 +41,7 @@ const ZERO_SHA_RE = /^0+$/;
  * Endpoints consumed by the generated pre-receive / post-receive git hooks.
  * Guarded by a shared secret (FLYGIT_HOOK_SECRET) — see docs/SECURITY.md.
  */
+@Public()
 @Controller('internal/git')
 export class GitHooksController {
   private readonly logger = new Logger(GitHooksController.name);

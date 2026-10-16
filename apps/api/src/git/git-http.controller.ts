@@ -2,6 +2,7 @@ import { Controller, All, Req, Res, Logger } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { spawn } from 'node:child_process';
 import { roleAtLeast } from '@flygit/shared';
+import { Public } from '../common/decorators/public.decorator';
 import { GitStorageService } from './git-storage.service';
 import { RepositoryAccessService } from './repository-access.service';
 import { GitAuthService, gitForbidden, gitNotFound, gitUnauthorized } from './git-auth.service';
@@ -15,6 +16,7 @@ const GIT_PATH_RE = /^\/git\/([^/]+)\/([^/]+)\.git\/(.+)$/;
  * Implemented by proxying to the standard `git http-backend` CGI,
  * which is the reference implementation of the smart protocol.
  */
+@Public()
 @Controller('git')
 export class GitHttpController {
   private readonly logger = new Logger(GitHttpController.name);
