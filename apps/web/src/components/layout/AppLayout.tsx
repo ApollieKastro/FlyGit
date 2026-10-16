@@ -30,9 +30,14 @@ export function AppLayout() {
               {t('nav.repositories')}
             </Link>
             {user ? (
-              <Link to="/repositories/new" className="hover:text-text">
-                {t('repo.new')}
-              </Link>
+              <>
+                <Link to="/organizations" className="hover:text-text">
+                  {t('nav.organizations')}
+                </Link>
+                <Link to="/repositories/new" className="hover:text-text">
+                  {t('repo.new')}
+                </Link>
+              </>
             ) : null}
           </nav>
 
