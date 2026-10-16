@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, Post, Query } from '@nestjs/common';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
-import { NotificationService } from './notification.service';
+import type { NotificationService } from './notification.service';
 
 @Controller('notifications')
 export class NotificationsController {

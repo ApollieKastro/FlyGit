@@ -15,7 +15,7 @@ import type { CreateTokenInput, SshKeyInput, UpdateProfileInput } from '@flygit/
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
-import { UsersService } from './users.service';
+import type { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {

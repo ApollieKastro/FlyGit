@@ -27,7 +27,7 @@ import type {
 import type { OrgRole } from '@flygit/shared';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
-import { OrganizationsService } from './organizations.service';
+import type { OrganizationsService } from './organizations.service';
 
 @Controller('organizations')
 export class OrganizationsController {

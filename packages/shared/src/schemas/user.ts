@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { LIMITS, USERNAME_PATTERN } from '../constants';
+import { LIMITS } from '../constants';
 import { usernameSchema } from './auth';
 
 export const updateProfileSchema = z

@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import type { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'node:crypto';
 import type { JwtPayload, PlatformRole } from '@flygit/shared';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { PrismaService } from '../prisma/prisma.service';
+import type { PrismaService } from '../prisma/prisma.service';
 import { randomToken, sha256 } from '../common/utils/crypto.util';
 
 export interface SessionRecord {

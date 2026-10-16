@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   HttpCode,
   Param,
@@ -30,7 +29,7 @@ import { CurrentUser, type AuthUser } from '../common/decorators/current-user.de
 import { OptionalUser } from '../common/decorators/optional-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { parseNumberParam } from '../common/utils/param.util';
-import { MergeRequestsService } from './merge-requests.service';
+import type { MergeRequestsService } from './merge-requests.service';
 
 @Controller('repositories/:owner/:repo/merge-requests')
 export class MergeRequestsController {

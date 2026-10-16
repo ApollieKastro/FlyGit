@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import * as argon2 from 'argon2';
-import { PrismaService } from '../prisma/prisma.service';
-import { UsersService } from '../users/users.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { UsersService } from '../users/users.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 
 /**

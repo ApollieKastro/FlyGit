@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { spawn } from 'node:child_process';
-import { readFile, stat } from 'node:fs/promises';
-import { join } from 'node:path';
-import type { CommitSummary, DiffHunk, DiffLine, FileContent, FileDiff, FileEntry, GitRef } from '@flygit/shared';
+import { stat } from 'node:fs/promises';
+import type { CommitSummary, DiffHunk, FileContent, FileDiff, FileEntry, GitRef } from '@flygit/shared';
 
 export interface GitResult {
   stdout: string;
@@ -180,7 +179,7 @@ export class GitCliService {
       .map((chunk) => chunk.trim())
       .filter(Boolean)
       .map((chunk) => {
-        const [sha, shortSha, an, ae, at, cn, ce, ct, parents, subject] = chunk.split(FS);
+        const [sha, shortSha, an, ae, at, _cn, _ce, ct, parents, subject] = chunk.split(FS);
         return {
           sha: sha!,
           shortSha: shortSha!,
@@ -204,7 +203,7 @@ export class GitCliService {
       .map((chunk) => chunk.trim())
       .filter(Boolean)
       .map((chunk) => {
-        const [sha, shortSha, an, ae, at, cn, ce, ct, parents, subject] = chunk.split(FS);
+        const [sha, shortSha, an, ae, at, _cn, _ce, ct, parents, subject] = chunk.split(FS);
         return {
           sha: sha!,
           shortSha: shortSha!,
@@ -221,7 +220,7 @@ export class GitCliService {
     const format = ['%H', '%h', '%an', '%ae', '%at', '%cn', '%ce', '%ct', '%P', '%s', '%b'].join(FS);
     const result = await this.run(['show', '-s', `--format=${format}`, sha], repoDir);
     if (result.code !== 0) return null;
-    const [H, h, an, ae, at, cn, ce, ct, parents, subject, body] = result.stdout.split(FS);
+    const [H, h, an, ae, at, _cn, _ce, ct, parents, subject, body] = result.stdout.split(FS);
     return {
       sha: H!,
       shortSha: h!,

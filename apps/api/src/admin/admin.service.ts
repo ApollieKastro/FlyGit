@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import type { AuditLogEntry } from '@flygit/shared';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuditService } from '../audit/audit.module';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { AuditService } from '../audit/audit.module';
 
 /** Platform administration: users, stats, global audit trail. */
 @Injectable()

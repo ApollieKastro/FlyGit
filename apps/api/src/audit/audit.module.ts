@@ -1,7 +1,7 @@
 import { Global, Injectable, Module } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import type { Request } from 'express';
-import { PrismaService } from '../prisma/prisma.service';
+import type { PrismaService } from '../prisma/prisma.service';
 
 export interface AuditEntry {
   actorId?: string | null;

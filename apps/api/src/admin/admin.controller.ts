@@ -6,14 +6,13 @@ import {
   HttpCode,
   Param,
   Patch,
-  Post,
   Query,
 } from '@nestjs/common';
 import { auditQuerySchema } from '@flygit/shared';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
 import { PlatformAdmin } from '../common/decorators/roles.decorator';
-import { AdminService } from './admin.service';
+import type { AdminService } from './admin.service';
 
 @PlatformAdmin()
 @Controller('admin')

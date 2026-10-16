@@ -16,12 +16,13 @@ import type {
   SessionInfo,
   UserPrivate,
 } from '@flygit/shared';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuditService } from '../audit/audit.module';
-import { MailService, MailTemplates, type MailLocale } from '../mail/mail.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { AuditService } from '../audit/audit.module';
+import type { MailService} from '../mail/mail.service';
+import { MailTemplates, type MailLocale } from '../mail/mail.service';
 import { randomToken, sha256 } from '../common/utils/crypto.util';
-import { TokenService } from './token.service';
-import { TotpService } from './totp.service';
+import type { TokenService } from './token.service';
+import type { TotpService } from './totp.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 
 const CONFIRM_TOKEN_TTL_MS = 72 * 60 * 60 * 1000;

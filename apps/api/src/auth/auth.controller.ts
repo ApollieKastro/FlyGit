@@ -6,7 +6,6 @@ import {
   HttpCode,
   Param,
   Post,
-  Query,
   Req,
   Res,
   Headers,
@@ -26,7 +25,7 @@ import { Public } from '../common/decorators/public.decorator';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
 import { RateLimit } from '../common/decorators/rate-limit.decorator';
 import { clientIp, userAgent } from '../common/utils/request.util';
-import { AuthService } from './auth.service';
+import type { AuthService } from './auth.service';
 import { REFRESH_COOKIE } from './jwt-auth.guard';
 import { sha256 } from '../common/utils/crypto.util';
 

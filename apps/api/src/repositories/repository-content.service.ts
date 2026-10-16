@@ -18,10 +18,11 @@ import type {
   UpdateFileInput,
 } from '@flygit/shared';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { PrismaService } from '../prisma/prisma.service';
-import { GitCliService } from '../git/git-cli.service';
-import { GitStorageService } from '../git/git-storage.service';
-import { RepositoryAccessService, type ResolvedAccess } from '../git/repository-access.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { GitCliService } from '../git/git-cli.service';
+import type { GitStorageService } from '../git/git-storage.service';
+import type { RepositoryAccessService} from '../git/repository-access.service';
+import { type ResolvedAccess } from '../git/repository-access.service';
 
 export interface CompareResult {
   from: string;

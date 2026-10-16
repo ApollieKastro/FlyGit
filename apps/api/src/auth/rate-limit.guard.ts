@@ -5,10 +5,10 @@ import {
   type CanActivate,
   type ExecutionContext,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import type { Reflector } from '@nestjs/core';
 import type { Request } from 'express';
 import { RATE_LIMIT_KEY, type RateLimitOptions } from '../common/decorators/rate-limit.decorator';
-import { RedisService } from '../redis/redis.service';
+import type { RedisService } from '../redis/redis.service';
 import { clientIp, rateLimitKey } from '../common/utils/request.util';
 
 /**

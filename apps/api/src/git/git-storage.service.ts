@@ -1,8 +1,9 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import type { OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { chmod, mkdir, rm, writeFile, access } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
-import { GitCliService } from './git-cli.service';
+import type { GitCliService } from './git-cli.service';
 
 export interface InitRepositoryOptions {
   ownerSlug: string;
@@ -15,7 +16,6 @@ export interface InitRepositoryOptions {
 }
 
 const HOOK_SECRET_PLACEHOLDER = '__FLYGIT_HOOK_SECRET__';
-const HOOK_API_PLACEHOLDER = '__FLYGIT_API_URL__';
 
 /**
  * Manages the bare-repository storage on disk.

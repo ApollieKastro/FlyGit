@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   Query,
 } from '@nestjs/common';
 import {
@@ -23,7 +22,7 @@ import { CurrentUser, type AuthUser } from '../common/decorators/current-user.de
 import { OptionalUser } from '../common/decorators/optional-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
 import { parseNumberParam } from '../common/utils/param.util';
-import { IssuesService } from './issues.service';
+import type { IssuesService } from './issues.service';
 
 @Controller('repositories/:owner/:repo')
 export class IssuesController {

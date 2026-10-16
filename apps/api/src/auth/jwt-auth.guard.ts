@@ -1,8 +1,8 @@
 import { Injectable, type CanActivate, type ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import type { Reflector } from '@nestjs/core';
 import type { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../common/decorators/public.decorator';
-import { TokenService } from './token.service';
+import type { TokenService } from './token.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 
 export const REFRESH_COOKIE = 'fg_refresh';

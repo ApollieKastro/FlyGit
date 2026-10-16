@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import type { CreateWebhookInput, Release } from '@flygit/shared';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { PrismaService } from '../prisma/prisma.service';
-import { RepositoryAccessService } from '../git/repository-access.service';
-import { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { RepositoryAccessService } from '../git/repository-access.service';
+import type { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
 import { toSlug } from '../common/utils/crypto.util';
 
 /** Repository-level settings: webhooks, protected branches, releases, wiki. */

@@ -3,9 +3,10 @@ import type { Request, Response } from 'express';
 import { spawn } from 'node:child_process';
 import { roleAtLeast } from '@flygit/shared';
 import { Public } from '../common/decorators/public.decorator';
-import { GitStorageService } from './git-storage.service';
-import { RepositoryAccessService } from './repository-access.service';
-import { GitAuthService, gitForbidden, gitNotFound, gitUnauthorized } from './git-auth.service';
+import type { GitStorageService } from './git-storage.service';
+import type { RepositoryAccessService } from './repository-access.service';
+import type { GitAuthService} from './git-auth.service';
+import { gitForbidden, gitNotFound, gitUnauthorized } from './git-auth.service';
 
 const GIT_PATH_RE = /^\/git\/([^/]+)\/([^/]+)\.git\/(.+)$/;
 

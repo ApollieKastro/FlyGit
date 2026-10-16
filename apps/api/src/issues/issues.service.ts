@@ -14,11 +14,12 @@ import type {
   UpdateIssueInput,
 } from '@flygit/shared';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuditService } from '../audit/audit.module';
-import { NotificationService, extractMentions } from '../notifications/notification.service';
-import { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
-import { RepositoryAccessService } from '../git/repository-access.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { AuditService } from '../audit/audit.module';
+import type { NotificationService} from '../notifications/notification.service';
+import { extractMentions } from '../notifications/notification.service';
+import type { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
+import type { RepositoryAccessService } from '../git/repository-access.service';
 
 const USER_PUBLIC_SELECT = {
   id: true,

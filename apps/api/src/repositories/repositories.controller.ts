@@ -33,9 +33,9 @@ import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import { CurrentUser, type AuthUser } from '../common/decorators/current-user.decorator';
 import { OptionalUser } from '../common/decorators/optional-user.decorator';
 import { Public } from '../common/decorators/public.decorator';
-import { RepositoriesService } from './repositories.service';
-import { RepositoryContentService } from './repository-content.service';
-import { RepositorySettingsService } from './repository-settings.service';
+import type { RepositoriesService } from './repositories.service';
+import type { RepositoryContentService } from './repository-content.service';
+import type { RepositorySettingsService } from './repository-settings.service';
 
 type OptUser = AuthUser | undefined;
 

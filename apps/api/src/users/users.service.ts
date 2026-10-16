@@ -1,8 +1,8 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { createHash } from 'node:crypto';
-import type { CreateTokenInput, SshKeyInput, UpdateProfileInput, UserPrivate, UserPublic } from '@flygit/shared';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuditService } from '../audit/audit.module';
+import type { CreateTokenInput, SshKeyInput, UpdateProfileInput, UserPrivate } from '@flygit/shared';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { AuditService } from '../audit/audit.module';
 import { randomToken, sha256 } from '../common/utils/crypto.util';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 

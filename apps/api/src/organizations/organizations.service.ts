@@ -9,9 +9,10 @@ import type { CreateOrganizationInput, UpdateOrganizationInput } from '@flygit/s
 import type { OrgRole, OrganizationDetail } from '@flygit/shared';
 import type { Organization } from '@prisma/client';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuditService } from '../audit/audit.module';
-import { MailService, MailTemplates, type MailLocale } from '../mail/mail.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { AuditService } from '../audit/audit.module';
+import type { MailService} from '../mail/mail.service';
+import { MailTemplates, type MailLocale } from '../mail/mail.service';
 import { randomToken, sha256, toSlug } from '../common/utils/crypto.util';
 
 const INVITE_TTL_DAYS = 14;

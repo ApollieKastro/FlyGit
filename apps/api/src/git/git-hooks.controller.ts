@@ -10,12 +10,12 @@ import {
 import { z } from 'zod';
 import type { RepoRole } from '@flygit/shared';
 import { roleAtLeast } from '@flygit/shared';
-import { PrismaService } from '../prisma/prisma.service';
+import type { PrismaService } from '../prisma/prisma.service';
 import { Public } from '../common/decorators/public.decorator';
-import { GitCliService } from './git-cli.service';
-import { GitStorageService } from './git-storage.service';
-import { RepositoryAccessService } from './repository-access.service';
-import { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
+import type { GitCliService } from './git-cli.service';
+import type { GitStorageService } from './git-storage.service';
+import type { RepositoryAccessService } from './repository-access.service';
+import type { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
 import { randomToken } from '../common/utils/crypto.util';
 
 const hookBodySchema = z.object({
@@ -295,6 +295,7 @@ export function matchPattern(pattern: string, value: string): boolean {
     .replace(/[.+^${}()|[\]\\]/g, '\\$&')
     .replace(/\*\*/g, '\u0000')
     .replace(/\*/g, '[^/]*')
+    // eslint-disable-next-line no-control-regex -- sentinel for `**` glob
     .replace(/\u0000/g, '.*')
     .replace(/\?/g, '.');
   return new RegExp(`^${escaped}$`).test(value);

@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import type { NotificationType } from '@flygit/shared';
-import { NOTIFICATION_TYPES } from '@flygit/shared';
-import { PrismaService } from '../prisma/prisma.service';
-import { MailService, type MailLocale } from '../mail/mail.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { MailService} from '../mail/mail.service';
+import { type MailLocale } from '../mail/mail.service';
 
 export interface CreateNotificationInput {
   userId: string;

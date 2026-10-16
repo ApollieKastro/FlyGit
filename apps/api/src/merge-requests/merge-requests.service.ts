@@ -19,13 +19,13 @@ import type {
   UpdateMergeRequestInput,
 } from '@flygit/shared';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
-import { PrismaService } from '../prisma/prisma.service';
-import { AuditService } from '../audit/audit.module';
-import { NotificationService } from '../notifications/notification.service';
-import { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
-import { RepositoryAccessService } from '../git/repository-access.service';
-import { GitCliService } from '../git/git-cli.service';
-import { GitStorageService } from '../git/git-storage.service';
+import type { PrismaService } from '../prisma/prisma.service';
+import type { AuditService } from '../audit/audit.module';
+import type { NotificationService } from '../notifications/notification.service';
+import type { WebhookDispatcherService } from '../webhooks/webhook-dispatcher.service';
+import type { RepositoryAccessService } from '../git/repository-access.service';
+import type { GitCliService } from '../git/git-cli.service';
+import type { GitStorageService } from '../git/git-storage.service';
 
 const USER_PUBLIC_SELECT = {
   id: true,
@@ -651,8 +651,8 @@ export class MergeRequestsService {
     // Perform the merge.
     const mergeSha = await this.performMerge(repoDir, mr, input, currentBase, user);
 
-    const updated = await this.prisma.$transaction(async (tx) => {
-      const u = await tx.mergeRequest.update({
+    await this.prisma.$transaction(async (tx) => {
+      await tx.mergeRequest.update({
         where: { id: mr.id },
         data: {
           status: 'merged',
@@ -669,7 +669,6 @@ export class MergeRequestsService {
         where: { id: access.repository.id },
         data: { openMergeRequestsCount: { decrement: 1 } },
       });
-      return u;
     });
 
     // Auto-close linked issues ("Closes #12").

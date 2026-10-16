@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import type { OrgRole, RepoRole, RepositoryAccess } from '@flygit/shared';
 import { roleAtLeast, REPO_ROLES } from '@flygit/shared';
-import { PrismaService } from '../prisma/prisma.service';
+import type { PrismaService } from '../prisma/prisma.service';
 import type { AuthUser } from '../common/decorators/current-user.decorator';
 import type { OwnerType, Repository } from '@prisma/client';
 
