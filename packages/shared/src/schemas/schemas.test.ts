@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { loginSchema, passwordSchema, registerSchema, usernameSchema } from './auth';
 import { createRepositorySchema } from './repository';
-import { roleAtLeast, ROLE_WEIGHT } from './constants';
+import { roleAtLeast, ROLE_WEIGHT } from '../constants';
 
 describe('auth schemas', () => {
   it('accepts a valid registration payload', () => {

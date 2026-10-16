@@ -28,6 +28,8 @@ export const registerSchema = z
     username: usernameSchema,
     password: passwordSchema,
     displayName: z.string().trim().max(LIMITS.displayNameMax).optional(),
+    /** Preferred language for transactional emails and the UI. */
+    locale: z.enum(['ru', 'en', 'zh-CN']).optional(),
     /** Terms acceptance is required by the UI. */
     acceptTerms: z.literal(true, { message: 'validation:termsRequired' }),
   })
