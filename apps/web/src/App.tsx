@@ -12,6 +12,7 @@ import { OrganizationsPage } from './pages/OrganizationsPage';
 import { OrganizationDetailPage } from './pages/OrganizationDetailPage';
 import { NotificationsPage } from './pages/NotificationsPage';
 import { AdminPage } from './pages/AdminPage';
+import { SearchPage } from './pages/SearchPage';
 
 /**
  * Application shell and route table.
@@ -28,6 +29,7 @@ export function App() {
         <Route path="repositories/new" element={<CreateRepositoryPage />} />
         <Route path="repositories/:owner/:repo/*" element={<RepositoryPage />} />
         <Route path="users/:username" element={<UserProfilePage />} />
+        <Route path="search" element={<SearchPage />} />
         <Route path="organizations" element={<OrganizationsPage />} />
         <Route path="organizations/:slug" element={<OrganizationDetailPage />} />
         <Route path="notifications" element={<NotificationsPage />} />

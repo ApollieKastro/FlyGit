@@ -315,6 +315,14 @@
     "light": "浅色",
     "system": "跟随系统"
   },
+  "search": {
+    "title": "搜索",
+    "placeholder": "搜索仓库和用户…",
+    "hint": "输入查询以搜索仓库和用户。",
+    "repositories": "仓库",
+    "users": "用户",
+    "noResults": "未找到结果。"
+  },
   "home": {
     "tagline": "自托管 Git 平台",
     "subtitle": "仓库、议题、合并请求、组织和通知。完全掌控您的代码。",

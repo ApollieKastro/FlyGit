@@ -315,6 +315,14 @@
     "light": "Light",
     "system": "System"
   },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search repositories and people…",
+    "hint": "Type a query to search repositories and users.",
+    "repositories": "Repositories",
+    "users": "People",
+    "noResults": "No results found."
+  },
   "home": {
     "tagline": "self-hosted Git platform",
     "subtitle": "Repositories, issues, merge requests, organizations and notifications. Full control over your code.",

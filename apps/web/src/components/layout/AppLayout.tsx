@@ -1,3 +1,4 @@
+import { useState, type FormEvent } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../features/auth/AuthContext';
 import { useUnreadCount } from '../../features/notifications/api';
@@ -16,6 +17,13 @@ export function AppLayout() {
   const { data: unread } = useUnreadCount(Boolean(user));
   const unreadCount = unread?.count ?? 0;
   const { theme, setTheme } = useTheme();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  function handleSearch(e: FormEvent) {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (q) navigate(`/search?q=${encodeURIComponent(q)}`);
+  }
 
   async function handleLogout() {
     await logout();
@@ -44,6 +52,16 @@ export function AppLayout() {
                 </Link>
               </>
             ) : null}
+            <form onSubmit={handleSearch} className="ml-2 hidden sm:block" role="search">
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={t('search.placeholder')}
+                aria-label={t('search.placeholder')}
+                className="w-44 rounded-[var(--radius)] border border-border bg-bg-subtle px-2.5 py-1 text-sm text-text-muted transition-all placeholder:text-text-faint focus:w-60 focus:border-accent focus:text-text focus:outline-none"
+              />
+            </form>
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
