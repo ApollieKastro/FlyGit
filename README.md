@@ -1,6 +1,7 @@
 # FlyGit
 
 Self-hosted Git platform: repositories, issues, merge requests, organizations and notifications — with full control over your code and data.
+<img width="1356" height="1022" alt="image" src="https://github.com/user-attachments/assets/ea1d2138-a953-470c-bcad-adadd53c0a51" />
 
 ## Features
 
